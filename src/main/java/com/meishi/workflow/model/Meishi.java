@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-public class Meishi implements Serializable {
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
+public class Meishi extends MongoDocument implements Serializable {
 
 	/**
 	 * 

@@ -2,6 +2,9 @@ package com.meishi.workflow.model;
 
 import java.io.Serializable;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class Administrator extends Worker implements Serializable {
 
 	/**

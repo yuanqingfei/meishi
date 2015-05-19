@@ -4,19 +4,15 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class Order implements Serializable {
+public class Order extends MongoDocument implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3111494353502958534L;
-
-	@Id
-	private String id;
 
 	private Date orderTime;
 
@@ -126,14 +122,6 @@ public class Order implements Serializable {
 
 	public void setTotalPrice(Double totalPrice) {
 		this.totalPrice = totalPrice;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package com.meishi.workflow.model;
 
 import java.io.Serializable;
 
-public class Person implements Serializable {
+public class Person extends MongoDocument implements Serializable {
 	/**
 	 * 
 	 */
@@ -12,6 +12,8 @@ public class Person implements Serializable {
 	protected Integer age;
 	protected String telephoneNumber;
 	protected Location address;
+	
+//	@Key
 	protected String identity;
 
 	public String getName() {

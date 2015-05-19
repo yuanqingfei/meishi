@@ -2,28 +2,28 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="orderProcess" name="Order process" isExecutable="true">
     <startEvent id="startevent1" name="Start"></startEvent>
-    <userTask id="usertask1" name="Client Creat an Order" activiti:candidateGroups="client">
+    <userTask id="clientDropOrder" name="Client Creat an Order" activiti:candidateGroups="client">
       <extensionElements>
         <activiti:formProperty id="meishiList" name="Meishi Ordered" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="clientLocation" name="Target Location Details" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="clientId" name="Customer Personal Id" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow1" name="by offer location and food list" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Assign an admin" activiti:class="com.meishi.workflow.service.AssignAdminService"></serviceTask>
+    <sequenceFlow id="flow1" name="by offer location and food list" sourceRef="startevent1" targetRef="clientDropOrder"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Assign an admin" activiti:class="com.meishi.workflow.task.AssignAdminTask"></serviceTask>
     <subProcess id="subprocess1" name="Sub Process">
-      <serviceTask id="servicetask1" name="Assign a Cook with Status Cooking" activiti:class="com.meishi.workflow.service.AssignCookService"></serviceTask>
-      <userTask id="usertask2" name="Cook Accept Order" activiti:candidateGroups="cook"></userTask>
-      <userTask id="usertask3" name="Cooking is Done" activiti:candidateGroups="cook"></userTask>
+      <serviceTask id="servicetask1" name="Assign a Cook with Status Cooking" activiti:class="com.meishi.workflow.task.AssignCookTask"></serviceTask>
+      <userTask id="cookAcceptOrder" name="Cook Accept Order" activiti:candidateGroups="cook"></userTask>
+      <userTask id="cookDoneOrder" name="Cooking is Done" activiti:candidateGroups="cook"></userTask>
       <startEvent id="startevent2" name="Start"></startEvent>
       <sequenceFlow id="flow15" sourceRef="startevent2" targetRef="servicetask1"></sequenceFlow>
       <endEvent id="endevent1" name="End"></endEvent>
-      <sequenceFlow id="flow28" sourceRef="servicetask1" targetRef="usertask2"></sequenceFlow>
-      <serviceTask id="servicetask7" name="Update Order with Status COOKING" activiti:expression="${orderStatusTracer.updateOrderStatusToCooking(execution)}"></serviceTask>
-      <sequenceFlow id="flow39" sourceRef="usertask2" targetRef="servicetask7"></sequenceFlow>
-      <sequenceFlow id="flow40" sourceRef="servicetask7" targetRef="usertask3"></sequenceFlow>
-      <serviceTask id="servicetask8" name="Update Order with Status COOKED" activiti:expression="${orderStatusTracer.updateOrderStatusToCooked(execution)}"></serviceTask>
-      <sequenceFlow id="flow41" sourceRef="usertask3" targetRef="servicetask8"></sequenceFlow>
+      <sequenceFlow id="flow28" sourceRef="servicetask1" targetRef="cookAcceptOrder"></sequenceFlow>
+      <serviceTask id="servicetask7" name="Update Order with Status COOKING" activiti:expression="${trackOrderTask.updateOrderStatusToCooking(execution)}"></serviceTask>
+      <sequenceFlow id="flow39" sourceRef="cookAcceptOrder" targetRef="servicetask7"></sequenceFlow>
+      <sequenceFlow id="flow40" sourceRef="servicetask7" targetRef="cookDoneOrder"></sequenceFlow>
+      <serviceTask id="servicetask8" name="Update Order with Status COOKED" activiti:expression="${trackOrderTask.updateOrderStatusToCooked(execution)}"></serviceTask>
+      <sequenceFlow id="flow41" sourceRef="cookDoneOrder" targetRef="servicetask8"></sequenceFlow>
       <sequenceFlow id="flow42" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
     </subProcess>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="subprocess1" cancelActivity="true">
@@ -32,21 +32,21 @@
       </timerEventDefinition>
     </boundaryEvent>
     <endEvent id="endevent2" name="End"></endEvent>
-    <userTask id="usertask5" name="Escalation to Admin Info Admin and Refund" activiti:candidateGroups="admin"></userTask>
-    <sequenceFlow id="flow17" name="time duration exceed 40 mins" sourceRef="boundarytimer1" targetRef="usertask5"></sequenceFlow>
+    <userTask id="adminEsclateOrder" name="Escalation to Admin Info Admin and Refund" activiti:candidateGroups="admin"></userTask>
+    <sequenceFlow id="flow17" name="time duration exceed 40 mins" sourceRef="boundarytimer1" targetRef="adminEsclateOrder"></sequenceFlow>
     <subProcess id="subprocess2" name="Sub Process">
       <startEvent id="startevent3" name="Start"></startEvent>
-      <serviceTask id="servicetask2" name="Assign a Sender with Status Sending" activiti:class="com.meishi.workflow.service.AssignSenderService"></serviceTask>
-      <userTask id="usertask6" name="Sender Accept Order" activiti:candidateGroups="sender"></userTask>
-      <sequenceFlow id="flow29" sourceRef="servicetask2" targetRef="usertask6"></sequenceFlow>
-      <userTask id="usertask7" name="Sending is Done" activiti:candidateGroups="sender"></userTask>
+      <serviceTask id="servicetask2" name="Assign a Sender with Status Sending" activiti:class="com.meishi.workflow.task.AssignSenderTask"></serviceTask>
+      <userTask id="senderAcceptOrder" name="Sender Accept Order" activiti:candidateGroups="sender"></userTask>
+      <sequenceFlow id="flow29" sourceRef="servicetask2" targetRef="senderAcceptOrder"></sequenceFlow>
+      <userTask id="senderDoneOrder" name="Sending is Done" activiti:candidateGroups="sender"></userTask>
       <endEvent id="endevent3" name="End"></endEvent>
       <sequenceFlow id="flow32" sourceRef="startevent3" targetRef="servicetask2"></sequenceFlow>
-      <serviceTask id="servicetask9" name="Update  Order with Status SENDING" activiti:expression="${orderStatusTracer.updateOrderStatusToSending(execution)}"></serviceTask>
-      <serviceTask id="servicetask10" name="Update Order with Status Sent" activiti:expression="${orderStatusTracer.updateOrderStatusToSent(execution)}"></serviceTask>
-      <sequenceFlow id="flow43" sourceRef="usertask6" targetRef="servicetask9"></sequenceFlow>
-      <sequenceFlow id="flow44" sourceRef="servicetask9" targetRef="usertask7"></sequenceFlow>
-      <sequenceFlow id="flow45" sourceRef="usertask7" targetRef="servicetask10"></sequenceFlow>
+      <serviceTask id="servicetask9" name="Update  Order with Status SENDING" activiti:expression="${trackOrderTask.updateOrderStatusToSending(execution)}"></serviceTask>
+      <serviceTask id="servicetask10" name="Update Order with Status Sent" activiti:expression="${trackOrderTask.updateOrderStatusToSent(execution)}"></serviceTask>
+      <sequenceFlow id="flow43" sourceRef="senderAcceptOrder" targetRef="servicetask9"></sequenceFlow>
+      <sequenceFlow id="flow44" sourceRef="servicetask9" targetRef="senderDoneOrder"></sequenceFlow>
+      <sequenceFlow id="flow45" sourceRef="senderDoneOrder" targetRef="servicetask10"></sequenceFlow>
       <sequenceFlow id="flow46" sourceRef="servicetask10" targetRef="endevent3"></sequenceFlow>
     </subProcess>
     <sequenceFlow id="flow19" sourceRef="subprocess1" targetRef="subprocess2"></sequenceFlow>
@@ -55,16 +55,16 @@
         <timeDuration>PT20M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow24" name="time duration exceed 20 mins" sourceRef="boundarytimer2" targetRef="usertask5"></sequenceFlow>
-    <sequenceFlow id="flow26" sourceRef="usertask1" targetRef="servicetask3"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Save an Order with Status CREATED" activiti:delegateExpression="${orderCreator}"></serviceTask>
+    <sequenceFlow id="flow24" name="time duration exceed 20 mins" sourceRef="boundarytimer2" targetRef="adminEsclateOrder"></sequenceFlow>
+    <sequenceFlow id="flow26" sourceRef="clientDropOrder" targetRef="servicetask3"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Save an Order with Status CREATED" activiti:delegateExpression="${createOrderTask}"></serviceTask>
     <sequenceFlow id="flow33" sourceRef="servicetask3" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="servicetask4" targetRef="subprocess1"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Complete Order with Status Success" activiti:expression="${orderStatusTracer.updateOrderStatusToSuccess(execution)}"></serviceTask>
-    <serviceTask id="servicetask6" name="Complete Order with Status Failure" activiti:expression="${orderStatusTracer.updateOrderStatusToFailure(execution)}"></serviceTask>
+    <serviceTask id="servicetask5" name="Complete Order with Status Success" activiti:expression="${trackOrderTask.updateOrderStatusToSuccess(execution)}"></serviceTask>
+    <serviceTask id="servicetask6" name="Complete Order with Status Failure" activiti:expression="${trackOrderTask.updateOrderStatusToFailure(execution)}"></serviceTask>
     <sequenceFlow id="flow35" sourceRef="subprocess2" targetRef="servicetask5"></sequenceFlow>
     <sequenceFlow id="flow36" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow37" sourceRef="usertask5" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="adminEsclateOrder" targetRef="servicetask6"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_orderProcess">
@@ -72,7 +72,7 @@
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="165.0" y="-69.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+      <bpmndi:BPMNShape bpmnElement="clientDropOrder" id="BPMNShape_clientDropOrder">
         <omgdc:Bounds height="61.0" width="121.0" x="122.0" y="-16.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
@@ -84,10 +84,10 @@
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="63.0" width="128.0" x="390.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+      <bpmndi:BPMNShape bpmnElement="cookAcceptOrder" id="BPMNShape_cookAcceptOrder">
         <omgdc:Bounds height="71.0" width="111.0" x="480.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+      <bpmndi:BPMNShape bpmnElement="cookDoneOrder" id="BPMNShape_cookDoneOrder">
         <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="118.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="startevent2" id="BPMNShape_startevent2">
@@ -108,7 +108,7 @@
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="1157.0" y="345.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
+      <bpmndi:BPMNShape bpmnElement="adminEsclateOrder" id="BPMNShape_adminEsclateOrder">
         <omgdc:Bounds height="82.0" width="121.0" x="1062.0" y="5.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="subprocess2" id="BPMNShape_subprocess2">
@@ -120,10 +120,10 @@
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="84.0" width="131.0" x="390.0" y="280.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
+      <bpmndi:BPMNShape bpmnElement="senderAcceptOrder" id="BPMNShape_senderAcceptOrder">
         <omgdc:Bounds height="64.0" width="121.0" x="490.0" y="391.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask7" id="BPMNShape_usertask7">
+      <bpmndi:BPMNShape bpmnElement="senderDoneOrder" id="BPMNShape_senderDoneOrder">
         <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="395.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
@@ -182,7 +182,7 @@
         <omgdi:waypoint x="977.0" y="15.0"></omgdi:waypoint>
         <omgdi:waypoint x="1062.0" y="46.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="1137.0" y="-135.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="1152.0" y="-150.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
@@ -217,7 +217,7 @@
         <omgdi:waypoint x="959.0" y="260.0"></omgdi:waypoint>
         <omgdi:waypoint x="1122.0" y="87.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="969.0" y="-40.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="969.0" y="-70.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">

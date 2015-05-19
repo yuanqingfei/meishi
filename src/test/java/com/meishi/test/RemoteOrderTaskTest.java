@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
-import com.meishi.client.RestClientApplication;
+import com.meishi.test.client.RestClientApplication;
 
 /**
  * This test try to call Acitiviti Rest Service for order creating with
@@ -33,7 +34,7 @@ public class RemoteOrderTaskTest {
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	private static final String TASK_URL = "http://localhost:8080/runtime/tasks";
-	
+
 	private static final String INSTANCE_URL = "http://localhost:8080/runtime/process-instances";
 
 	private static final String COMPLETE_REQ = "{\"action\" : \"complete\", \"variables\" : []}";
@@ -45,12 +46,10 @@ public class RemoteOrderTaskTest {
 	// public void testClaimOrderForCustomer() {
 	// claimOrderFor("client1");
 	// }
-	
-	
-	@Test
-	public void testStartProcessInstance(){
-		String startProcessInstanceReq = "{\"processDefinitionKey\":\"oneTaskProcess\"}";
-		postRequest(INSTANCE_URL, startProcessInstanceReq);
+
+	public void testStartProcessInstance() {
+		String startProcessInstanceReq = "{\"processDefinitionKey\":\"orderProcess\"}";
+		postRequestCreated(INSTANCE_URL, startProcessInstanceReq);
 	}
 
 	public void testCreateOrder() {
@@ -61,7 +60,7 @@ public class RemoteOrderTaskTest {
 				+ "{\"name\" : \"clientLocation\", \"value\" : \"XuJiaHui\"}, "
 				+ "{\"name\" : \"clientId\", \"value\" : \"111222333\"}" + "]}";
 		// postRequest(getTaskUrlForAssignee("client1"), completeRequest);
-		postRequest(getTaskUrl(TASK_URL), completeRequest);
+		postRequestOK(getDetailsTaskUrl(TASK_URL), completeRequest);
 	}
 
 	// @Test
@@ -72,36 +71,39 @@ public class RemoteOrderTaskTest {
 
 	public void testCookAcceptOrder() {
 		// postRequest(getTaskUrlForAssignee("client1"), completeRequest);
-		postRequest(getTaskUrl(TASK_URL), COMPLETE_REQ);
+		postRequestOK(getDetailsTaskUrl(TASK_URL), COMPLETE_REQ);
 	}
 
 	public void testCookDoneOrder() {
-		postRequest(getTaskUrl(TASK_URL), COMPLETE_REQ);
+		postRequestOK(getDetailsTaskUrl(TASK_URL), COMPLETE_REQ);
 	}
 
 	public void testSenderAcceptOrder() {
-		postRequest(getTaskUrl(TASK_URL), COMPLETE_REQ);
+		postRequestOK(getDetailsTaskUrl(TASK_URL), COMPLETE_REQ);
 	}
 
 	public void testSenderDoneOrder() {
-		postRequest(getTaskUrl(TASK_URL), COMPLETE_REQ);
+		postRequestOK(getDetailsTaskUrl(TASK_URL), COMPLETE_REQ);
 	}
-	
-	public void testAdminDealOrder(){
-		postRequest(getTaskUrl(TASK_URL), COMPLETE_REQ);
+
+	public void testAdminDealOrder() {
+		postRequestOK(getDetailsTaskUrl(TASK_URL), COMPLETE_REQ);
 	}
-	
+
 	@Test
-	public void testSuccessOrder(){
+	public void testSuccessOrder() {
+		testStartProcessInstance();
 		testCreateOrder();
 		testCookAcceptOrder();
 		testCookDoneOrder();
 		testSenderAcceptOrder();
 		testSenderDoneOrder();
 	}
-	
+
 	@Test
-	public void testFailureOrder() throws InterruptedException{
+	@Ignore
+	public void testFailureOrder() throws InterruptedException {
+		testStartProcessInstance();
 		testCreateOrder();
 		testCookAcceptOrder();
 		testCookDoneOrder();
@@ -110,41 +112,52 @@ public class RemoteOrderTaskTest {
 		Assert.assertEquals("Escalation to Admin Info Admin and Refund", getTaskName(TASK_URL));
 		testAdminDealOrder();
 	}
-	
-	private JSONObject getTask(String url){
+
+	private JSONObject getTask(String url) {
 		ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
 		JSONArray jsonArray = (JSONArray) new JSONObject(response.getBody()).get("data");
-		JSONObject task = (JSONObject)jsonArray.get(0);
+		JSONObject task = (JSONObject) jsonArray.get(0);
 		return task;
 	}
 
-	private String getTaskUrl(String url) {
+	private String getDetailsTaskUrl(String url) {
 		JSONObject task = getTask(url);
 		Assert.assertNotNull(task);
-		return task.getString("url");
+		String taskUrl = task.getString("url");
+		logger.info("TASK URL: " + taskUrl);
+		return taskUrl;
 	}
-	
-	private String getTaskName(String url){
+
+	private String getTaskName(String url) {
 		JSONObject task = getTask(url);
 		Assert.assertNotNull(task);
 		return task.getString("name");
 	}
 
-	private void postRequest(String url, String requestString) {
+	private void postRequestCreated(String url, String requestString) {
+		ResponseEntity<String> claimResponse = postRequest(url, requestString);
+		Assert.assertEquals(HttpStatus.CREATED, claimResponse.getStatusCode());
+	}
+
+	private ResponseEntity<String> postRequest(String url, String requestString) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> request = new HttpEntity<String>(requestString, headers);
 		ResponseEntity<String> claimResponse = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
+		return claimResponse; 
+	}
+
+	private void postRequestOK(String url, String requestString) {
+		ResponseEntity<String> claimResponse = postRequest(url, requestString);
 		Assert.assertEquals(HttpStatus.OK, claimResponse.getStatusCode());
 	}
-	
+
 	private String getTaskUrlForAssignee(String assignee) {
-		return getTaskUrl(TASK_URL + "?assignee=" + assignee);
+		return getDetailsTaskUrl(TASK_URL + "?assignee=" + assignee);
 
 	}
 
 	private void claimOrderFor(String user) {
-		postRequest(getTaskUrl(TASK_URL), "{\"action\" : \"claim\", \"assignee\" : \"" + user + "\"}");
+		postRequestOK(getDetailsTaskUrl(TASK_URL), "{\"action\" : \"claim\", \"assignee\" : \"" + user + "\"}");
 	}
-
 }
