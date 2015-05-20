@@ -22,6 +22,8 @@ public class RestClientApplication {
 				.useSystemProperties().build();
 		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactoryDigestAuth(
 				host, client);
+//		requestFactory.setConnectTimeout(30*1000);
+//		requestFactory.setReadTimeout(30*1000);
 
 		return new RestTemplate(requestFactory);
 	}

@@ -10,7 +10,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow1" name="by offer location and food list" sourceRef="startevent1" targetRef="clientDropOrder"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Assign an admin" activiti:class="com.meishi.workflow.task.AssignAdminTask"></serviceTask>
+    <serviceTask id="servicetask3" name="Assign an admin" activiti:delegateExpression="${assignAdminTask}"></serviceTask>
     <subProcess id="subprocess1" name="Sub Process">
       <serviceTask id="servicetask1" name="Assign a Cook with Status Cooking" activiti:class="com.meishi.workflow.task.AssignCookTask"></serviceTask>
       <userTask id="cookAcceptOrder" name="Cook Accept Order" activiti:candidateGroups="cook"></userTask>
@@ -182,7 +182,7 @@
         <omgdi:waypoint x="977.0" y="15.0"></omgdi:waypoint>
         <omgdi:waypoint x="1062.0" y="46.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="1152.0" y="-150.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="1167.0" y="-165.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
@@ -217,7 +217,7 @@
         <omgdi:waypoint x="959.0" y="260.0"></omgdi:waypoint>
         <omgdi:waypoint x="1122.0" y="87.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="969.0" y="-70.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="969.0" y="-100.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">

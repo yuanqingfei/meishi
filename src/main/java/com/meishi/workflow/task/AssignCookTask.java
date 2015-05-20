@@ -4,12 +4,14 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import com.meishi.workflow.model.Cook;
-import com.meishi.workflow.model.Order;
-import com.meishi.workflow.model.OrderStatusEntry;
-import com.meishi.workflow.repository.OrderRepository;
+import com.meishi.model.Cook;
+import com.meishi.model.Order;
+import com.meishi.model.OrderStatusEntry;
+import com.meishi.repository.OrderRepository;
 
+@Component
 public class AssignCookTask implements JavaDelegate {
 	
 	private static final Logger logger = Logger.getLogger(AssignCookTask.class);

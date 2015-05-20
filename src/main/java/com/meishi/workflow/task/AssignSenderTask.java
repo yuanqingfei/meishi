@@ -3,9 +3,11 @@ package com.meishi.workflow.task;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
-import com.meishi.workflow.model.Transporter;
+import com.meishi.model.Sender;
 
+@Component
 public class AssignSenderTask implements JavaDelegate {
 	
 	private Logger logger = Logger.getLogger(this.getClass());
@@ -13,13 +15,8 @@ public class AssignSenderTask implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution exec) throws Exception {
 		
-//		String cook = (String)exec.getVariable("cook");
-		
-		// get the nearest sender according to cook location.
-		
-		
 		//set sender
-		Transporter sender = new Transporter();
+		Sender sender = new Sender();
 		sender.setIdentity("111111");
 		sender.setName("Real_Sender");
 		sender.setTelephoneNumber("222222");
