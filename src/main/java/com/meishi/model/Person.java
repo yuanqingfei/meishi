@@ -2,17 +2,60 @@ package com.meishi.model;
 
 import java.io.Serializable;
 
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
+import org.springframework.data.mongodb.core.index.Indexed;
+
 public class Person extends MongoDocument implements Serializable {
 	/**
 	 * 
 	 */
+	@Indexed
+	protected String identity;
+	
 	private static final long serialVersionUID = 1898355582020364397L;
 	protected String name;
 	protected Gender gender;
 	protected Integer age;
 	protected String telephoneNumber;
-	protected Location address;
-	protected String identity;
+	
+	protected String streetName;
+	protected String districtName;
+	protected String commercialCircle;
+	
+	@GeoSpatialIndexed
+	protected double[] location;
+	
+	public String getStreetName() {
+		return streetName;
+	}
+
+	public void setStreetName(String streetName) {
+		this.streetName = streetName;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public String getCommercialCircle() {
+		return commercialCircle;
+	}
+
+	public void setCommercialCircle(String commercialCircle) {
+		this.commercialCircle = commercialCircle;
+	}
+
+	public double[] getLocation() {
+		return location;
+	}
+
+	public void setLocation(double[] location) {
+		this.location = location;
+	}
 
 	public String getName() {
 		return name;
@@ -46,14 +89,6 @@ public class Person extends MongoDocument implements Serializable {
 		this.telephoneNumber = telephoneNumber;
 	}
 
-	public Location getAddress() {
-		return address;
-	}
-
-	public void setAddress(Location address) {
-		this.address = address;
-	}
-
 	public String getIdentity() {
 		return identity;
 	}
@@ -65,7 +100,7 @@ public class Person extends MongoDocument implements Serializable {
 	@Override
 	public String toString() {
 		return "Person [name=" + name + ", gender=" + gender + ", age=" + age + ", telephoneNumber=" + telephoneNumber
-				+ ", address=" + address + ", identity=" + identity + "]";
+				+ ", identity=" + identity + "]";
 	}
 
 	@Override
@@ -73,8 +108,6 @@ public class Person extends MongoDocument implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((identity == null) ? 0 : identity.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((telephoneNumber == null) ? 0 : telephoneNumber.hashCode());
 		return result;
 	}
 
@@ -92,17 +125,8 @@ public class Person extends MongoDocument implements Serializable {
 				return false;
 		} else if (!identity.equals(other.identity))
 			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (telephoneNumber == null) {
-			if (other.telephoneNumber != null)
-				return false;
-		} else if (!telephoneNumber.equals(other.telephoneNumber))
-			return false;
 		return true;
 	}
 
+	
 }

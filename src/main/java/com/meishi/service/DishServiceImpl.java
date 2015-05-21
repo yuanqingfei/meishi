@@ -10,7 +10,7 @@ import com.meishi.model.Dish;
 public class DishServiceImpl implements DishService {
 
 	@Override
-	public Dish saveAndUpdate(Dish entity) {
+	public Dish upsert(Dish entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -22,7 +22,7 @@ public class DishServiceImpl implements DishService {
 	}
 
 	@Override
-	public Dish find(String identity) {
+	public Dish get(String identity) {
 		// TODO Auto-generated method stub
 		return null;
 	}

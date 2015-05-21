@@ -4,11 +4,11 @@ import java.util.List;
 
 public interface CrudInterface<T> {
 	
-	public abstract T saveAndUpdate(T entity);
+	public abstract T upsert(T entity);
 
 	public abstract void delete(String identity);
 
-	public abstract T find(String identity);
+	public abstract T get(String identity);
 
 	public abstract Boolean isExisted(String identity);
 	

@@ -3,9 +3,25 @@ package com.meishi.service;
 import java.util.Date;
 import java.util.List;
 
+import com.meishi.model.Cook;
 import com.meishi.model.Order;
+import com.meishi.model.Sender;
 
 public interface OrderService extends CrudInterface<Order> {
+	
+	public Order getOne(String id);
+
+	public Order getByCustomerIdentityAndOrderTime(String identity, Date orderTime);
+	
+	
+	public List<Order> getOrdersByCook(Cook cook);
+	
+	public List<Order> getOrdersByCook(String cookIdentity);
+	
+	public List<Order> getOrdersBySender(Sender sender);
+	
+	public List<Order> getOrdersBySender(String senderIdentity);
+	
 
 	public abstract List<Order> getByCookIdentity(String cookIdentity);
 	

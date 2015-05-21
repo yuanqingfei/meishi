@@ -15,7 +15,9 @@ import com.meishi.model.Order;
 import com.meishi.model.OrderStatus;
 import com.meishi.model.OrderStatusEntry;
 import com.meishi.model.Sender;
-import com.meishi.repository.OrderRepository;
+import com.meishi.model.WorkerStatus;
+import com.meishi.service.CookService;
+import com.meishi.service.OrderService;
 
 @Component
 public class TrackOrderTask {
@@ -23,7 +25,10 @@ public class TrackOrderTask {
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired
-	private OrderRepository orderRepo;
+	private OrderService orderService;
+	
+	@Autowired
+	private CookService cookService;
 
 	private DelegateExecution execution;
 
@@ -35,15 +40,18 @@ public class TrackOrderTask {
 
 	private void updateOrderCook() {
 		Order order = getOrder();
-		Cook cook = (Cook) execution.getVariable("cook");
-		List<Cook> cooks = new ArrayList<Cook>();
-		cooks.add(cook);
-		order.setCooks(cooks);
-		orderRepo.save(order);
+		List<Cook> cooks = (List<Cook>) execution.getVariable("cooks");
+		order.setCooks(new ArrayList<Cook>(cooks));
+		orderService.upsert(order);
 	}
 
 	public void updateOrderStatusToCooked(DelegateExecution execution) {
 		this.execution = execution;
+		List<Cook> cooks = (List<Cook>) execution.getVariable("cooks");
+		for(Cook cook : cooks){
+			cook.setStatus(WorkerStatus.READY);
+			cookService.upsert(cook);
+		}
 		updateOrderStatusTo(OrderStatus.COOKED);
 	}
 
@@ -59,7 +67,7 @@ public class TrackOrderTask {
 		List<Sender> senders = new ArrayList<Sender>();
 		senders.add(sender);
 		order.setSenders(senders);
-		orderRepo.save(order);
+		orderService.upsert(order);
 	}
 
 	public void updateOrderStatusToSent(DelegateExecution execution) {
@@ -78,7 +86,7 @@ public class TrackOrderTask {
 	}
 
 	private void updateOrderStatusTo(OrderStatus status) {
-		Assert.notNull(orderRepo);
+		Assert.notNull(orderService);
 		Assert.notNull(execution);
 
 		Order order = getOrder();
@@ -88,14 +96,13 @@ public class TrackOrderTask {
 		entry.setTime(new Date());
 		order.getStatuses().add(entry);
 
-		orderRepo.save(order);
+		orderService.upsert(order);
 		logger.info("update order status to: " + status);
 	}
 
 	private Order getOrder() {
 		String orderId = (String) execution.getVariable("orderId");
-		Assert.notNull(orderId);
-		Order order = orderRepo.findOne(orderId);
+		Order order = orderService.getOne(orderId);
 		return order;
 	}
 

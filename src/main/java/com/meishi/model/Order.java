@@ -32,16 +32,26 @@ public class Order extends MongoDocument implements Serializable {
 
 	private Double totalPrice;
 
-	private Location deliveryAddress;
+	private String deliveryAddress;
+	
+	private Double[] location;
 
 	private List<OrderStatusEntry> statuses;
 
-	public Location getDeliveryAddress() {
+	public String getDeliveryAddress() {
 		return deliveryAddress;
 	}
 
-	public void setDeliveryAddress(Location deliveryAddress) {
+	public void setDeliveryAddress(String deliveryAddress) {
 		this.deliveryAddress = deliveryAddress;
+	}
+
+	public Double[] getLocation() {
+		return location;
+	}
+
+	public void setLocation(Double[] location) {
+		this.location = location;
 	}
 
 	public Administrator getAdministrator() {

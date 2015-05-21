@@ -5,13 +5,15 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.meishi.model.Cook;
 import com.meishi.model.Order;
+import com.meishi.model.Sender;
 
 @Component
 public class OrderServiceImpl implements OrderService {
 
 	@Override
-	public Order saveAndUpdate(Order entity) {
+	public Order upsert(Order entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -22,9 +24,8 @@ public class OrderServiceImpl implements OrderService {
 
 	}
 
-
 	@Override
-	public Order find(String identity) {
+	public Order get(String identity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -187,6 +188,42 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<Order> getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Order getByCustomerIdentityAndOrderTime(String identity, Date orderTime) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getOrdersByCook(Cook cook) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getOrdersByCook(String cookIdentity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getOrdersBySender(Sender sender) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getOrdersBySender(String senderIdentity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Order getOne(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

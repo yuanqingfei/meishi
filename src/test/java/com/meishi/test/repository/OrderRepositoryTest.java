@@ -14,13 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.meishi.MeishiRepositoryApplication;
 import com.meishi.model.Administrator;
 import com.meishi.model.Cook;
 import com.meishi.model.Customer;
 import com.meishi.model.Dish;
 import com.meishi.model.Order;
 import com.meishi.model.Sender;
-import com.meishi.repository.MeishiRepositoryApplication;
 import com.meishi.repository.OrderRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -32,73 +32,98 @@ public class OrderRepositoryTest {
 	@Autowired
 	private OrderRepository orderRepo;
 
+	private Order order;
+
+	private Cook cook;
+
+	private Sender sender;
+
+	private Administrator admin;
+
+	private Customer customer;
+
 	private Date orderTime = new Date();
 
 	@Before
 	public void setUp() {
 		Assert.assertNotNull(orderRepo);
 
-		Order testOrder = new Order();
+		order = new Order();
 		List<Dish> foods = new ArrayList<Dish>();
 		Dish meishi1 = new Dish();
 		meishi1.setName("LaZiJiDing");
 		foods.add(meishi1);
-		testOrder.setFoods(foods);
-		Customer orderBy = new Customer();
-		orderBy.setName("Customer");
-		orderBy.setIdentity("1234567Consumer");
-		testOrder.setCustomer(orderBy);
-		Cook cookBy = new Cook();
-		cookBy.setName("厨师张");
-		cookBy.setIdentity("1234567Cook");
-//		testOrder.setCook(cookBy);
-		Sender sendBy = new Sender();
-		sendBy.setName("Transporter");
-		sendBy.setIdentity("1234567Transporter");
-//		testOrder.setTransporter(sendBy);
-		Administrator admin = new Administrator();
-		admin.setName("Admin");
+		order.setFoods(foods);
+
+		customer = new Customer();
+		customer.setName("Customer");
+		customer.setIdentity("1234567Consumer");
+		order.setCustomer(customer);
+
+		cook = new Cook();
+		cook.setName("厨师张");
+		cook.setIdentity("1234567Cook");
+		cook.setDishes(foods);
+		List<Cook> cooks = new ArrayList<Cook>();
+		cooks.add(cook);
+		order.setCooks(cooks);
+
+		sender = new Sender();
+		sender.setName("Mr. Zhang");
+		sender.setIdentity("1234567Transporter");
+		List<Sender> senders = new ArrayList<Sender>();
+		senders.add(sender);
+		order.setSenders(senders);
+
+		admin = new Administrator();
+		admin.setName("Mr. Li");
 		admin.setIdentity("1234567Admin");
-		testOrder.setAdministrator(admin);
+		order.setAdministrator(admin);
 
-		testOrder.setOrderTime(orderTime);
+		order.setOrderTime(orderTime);
 
-		orderRepo.save(testOrder);
-	}
-
-	@Test
-	public void testGetAll() {
-		Assert.assertEquals(1, orderRepo.findAll().size());
-	}
-
-	@Test
-	public void testFindByCustomer_IdCard() {
-		Assert.assertEquals(1, orderRepo.findByCustomer_Identity("1234567Consumer").size());
-	}
-
-//	@Test
-//	public void testFindByCook_IdCard() {
-//		Assert.assertEquals(1, orderRepo.findByCook_Identity("1234567Cook").size());
-//	}
-//
-//	@Test
-//	public void testFindByTransporter_IdCard() {
-//		Assert.assertEquals(1, orderRepo.findByCook_Identity("1234567Transporter").size());
-//	}
-
-	@Test
-	public void testFindByAdministrator_IdCard() {
-		Assert.assertEquals(1, orderRepo.findByAdministrator_Identity("1234567Admin").size());
-	}
-	
-	@Test
-	public void testFindByCustomer_IdCardAndOrderTime(){
-		Assert.assertEquals("厨师张", orderRepo.findByCustomer_IdentityAndOrderTime("1234567Consumer", orderTime).getCooks().get(0).getName());
+		orderRepo.save(order);
 	}
 
 	@After
 	public void tearDown() {
-		orderRepo.delete(orderRepo.findByAdministrator_Identity("1234567Admin").get(0).getId());
+		orderRepo.delete(orderRepo.findByAdministrator_Identity(admin.getIdentity()).get(0).getId());
+	}
+
+	@Test
+	public void testFindByCustomer_Identity() {
+		Assert.assertEquals(1, orderRepo.findByCustomer_Identity(customer.getIdentity()).size());
+	}
+
+	@Test
+	public void testFindByAdministrator_Identity() {
+		Assert.assertEquals(1, orderRepo.findByAdministrator_Identity(admin.getIdentity()).size());
+	}
+
+	@Test
+	public void testFindByCustomer_IdCardAndOrderTime() {
+		Assert.assertEquals("厨师张", orderRepo.findByCustomer_IdentityAndOrderTime(customer.getIdentity(), orderTime)
+				.getCooks().get(0).getName());
+	}
+
+	@Test
+	public void testFindOrdersByCook() {
+		Assert.assertNotNull(orderRepo.findOrdersByCook(cook));
+	}
+	
+	@Test
+	public void testFindOrdersByCookIdentity() {
+		Assert.assertNotNull(orderRepo.findOrdersByCook(cook.getIdentity()));
+	}
+	
+	@Test
+	public void testFindOrdersBySender() {
+		Assert.assertNotNull(orderRepo.findOrdersBySender(sender));
+	}
+	
+	@Test
+	public void testFindOrdersBySenderIdentity() {
+		Assert.assertNotNull(orderRepo.findOrdersBySender(sender.getIdentity()));
 	}
 
 }

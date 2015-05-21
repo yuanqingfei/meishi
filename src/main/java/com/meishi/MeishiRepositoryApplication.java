@@ -1,4 +1,4 @@
-package com.meishi.repository;
+package com.meishi;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.authentication.UserCredentials;
@@ -29,4 +29,8 @@ public class MeishiRepositoryApplication extends AbstractMongoConfiguration {
 		return new UserCredentials("meishiUser", "123456");
 	}
 
+	@Override
+	protected String getMappingBasePackage() {
+		return "com.meishi.repository";
+	}
 }

@@ -2,15 +2,17 @@ package com.meishi.service;
 
 import java.util.List;
 
+import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
 import com.meishi.model.Customer;
+import com.meishi.model.Dish;
 
 @Component
 public class CustomerServiceImpl implements CustomerService {
 
 	@Override
-	public Customer saveAndUpdate(Customer entity) {
+	public Customer upsert(Customer entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -22,7 +24,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Customer find(String identity) {
+	public Customer get(String identity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -40,12 +42,6 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public List<Customer> getCustomers() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Customer getHighestValueCustomer() {
 		// TODO Auto-generated method stub
 		return null;
@@ -53,6 +49,12 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public List<Customer> getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Dish> recommendDishes(Point location) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -3,9 +3,10 @@ package com.meishi.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
-import com.meishi.model.Location;
 import com.meishi.model.Rank;
 import com.meishi.model.Sender;
 import com.meishi.model.WorkerStatus;
@@ -18,19 +19,19 @@ public class SenderServiceImpl implements SenderService {
 	private SenderRepository senderRepo;
 
 	@Override
-	public Sender saveAndUpdate(Sender entity) {
+	public Sender upsert(Sender entity) {
 		return senderRepo.save(entity);
 	}
 
 	@Override
 	public void delete(String identity) {
-		Sender sender = find(identity);
+		Sender sender = get(identity);
 		senderRepo.delete(sender);
 	}
 
 	@Override
 	public Boolean isExisted(String identity) {
-		Sender sender = find(identity);
+		Sender sender = get(identity);
 		return senderRepo.exists(sender.getId());
 	}
 
@@ -49,30 +50,30 @@ public class SenderServiceImpl implements SenderService {
 		return senderRepo.findByStatus(WorkerStatus.READY);
 	}
 
-	@Override
-	public Sender getNearest(Location location) {
-		String streetName = location.getStreetName();
-		double x = location.getCoordinationX();
-		double y = location.getCoordinationY();
-		List<Sender> senders = getAllAvailable();
-		double shortestDistance = 100;
-		Sender selected = null;
-		for (Sender sender : senders) {
-			Location senderLocation = sender.getAddress();
-			String senderStreetName = senderLocation.getStreetName();
-			double senderX = senderLocation.getCoordinationX();
-			double senderY = senderLocation.getCoordinationY();
-			if (senderStreetName != null && senderStreetName.equalsIgnoreCase(streetName)) {
-				return sender;
-			}
-			double currentDistance = Math.sqrt((senderX - x) * (senderX - x) + (senderY - y) * (senderY - y));
-			if (currentDistance < shortestDistance) {
-				shortestDistance = currentDistance;
-				selected = sender;
-			}
-		}
-		return selected;
-	}
+//	@Override
+//	public Sender getNearest(Location location) {
+//		String streetName = location.getStreetName();
+//		double x = location.getCoordinationX();
+//		double y = location.getCoordinationY();
+//		List<Sender> senders = getAllAvailable();
+//		double shortestDistance = 100;
+//		Sender selected = null;
+//		for (Sender sender : senders) {
+//			Location senderLocation = sender.getAddress();
+//			String senderStreetName = senderLocation.getStreetName();
+//			double senderX = senderLocation.getCoordinationX();
+//			double senderY = senderLocation.getCoordinationY();
+//			if (senderStreetName != null && senderStreetName.equalsIgnoreCase(streetName)) {
+//				return sender;
+//			}
+//			double currentDistance = Math.sqrt((senderX - x) * (senderX - x) + (senderY - y) * (senderY - y));
+//			if (currentDistance < shortestDistance) {
+//				shortestDistance = currentDistance;
+//				selected = sender;
+//			}
+//		}
+//		return selected;
+//	}
 
 	@Override
 	public List<Sender> getRankHighest() {
@@ -81,7 +82,7 @@ public class SenderServiceImpl implements SenderService {
 
 	@Override
 	public void disable(String identity) {
-		Sender sender = find(identity);
+		Sender sender = get(identity);
 		sender.setStatus(WorkerStatus.DISABLE);
 		senderRepo.save(sender);
 	}
@@ -92,7 +93,13 @@ public class SenderServiceImpl implements SenderService {
 	}
 
 	@Override
-	public Sender find(String identity) {
+	public Sender get(String identity) {
 		return senderRepo.findByIdentity(identity);
+	}
+
+	@Override
+	public Sender selectByStatusLocationRank(Point location, Distance distance) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

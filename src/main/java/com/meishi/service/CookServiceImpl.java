@@ -3,10 +3,12 @@ package com.meishi.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
 import com.meishi.model.Cook;
-import com.meishi.model.Location;
+import com.meishi.model.Dish;
 import com.meishi.model.Rank;
 import com.meishi.model.WorkerStatus;
 import com.meishi.repository.CookRepository;
@@ -18,19 +20,19 @@ public class CookServiceImpl implements CookService {
 	private CookRepository cookRepo;
 
 	@Override
-	public Cook saveAndUpdate(Cook entity) {
+	public Cook upsert(Cook entity) {
 		return cookRepo.save(entity);
 	}
 
 	@Override
 	public void delete(String identity) {
-		Cook cook = find(identity);
+		Cook cook = get(identity);
 		cookRepo.delete(cook);
 	}
 
 	@Override
 	public Boolean isExisted(String identity) {
-		Cook cook = find(identity);
+		Cook cook = get(identity);
 		return cookRepo.exists(cook.getId());
 	}
 
@@ -49,30 +51,6 @@ public class CookServiceImpl implements CookService {
 		return cookRepo.findByStatus(WorkerStatus.READY);
 	}
 
-	@Override
-	public Cook getNearest(Location location) {
-		String streetName = location.getStreetName();
-		double x = location.getCoordinationX();
-		double y = location.getCoordinationY();
-		List<Cook> cooks = getAllAvailable();
-		double shortestDistance = 100;
-		Cook selected = null;
-		for (Cook cook : cooks) {
-			Location cookLocation = cook.getAddress();
-			String cookStreetName = cookLocation.getStreetName();
-			double cookX = cookLocation.getCoordinationX();
-			double cookY = cookLocation.getCoordinationY();
-			if (cookStreetName != null && cookStreetName.equalsIgnoreCase(streetName)) {
-				return cook;
-			}
-			double currentDistance = Math.sqrt((cookX - x) * (cookX - x) + (cookY - y) * (cookY - y));
-			if (currentDistance < shortestDistance) {
-				shortestDistance = currentDistance;
-				selected = cook;
-			}
-		}
-		return selected;
-	}
 
 	@Override
 	public List<Cook> getRankHighest() {
@@ -81,7 +59,7 @@ public class CookServiceImpl implements CookService {
 
 	@Override
 	public void disable(String identity) {
-		Cook cook = find(identity);
+		Cook cook = get(identity);
 		cook.setStatus(WorkerStatus.DISABLE);
 		cookRepo.save(cook);
 	}
@@ -92,7 +70,25 @@ public class CookServiceImpl implements CookService {
 	}
 
 	@Override
-	public Cook find(String identity) {
+	public Cook get(String identity) {
 		return cookRepo.findByIdentity(identity);
+	}
+
+	@Override
+	public Cook selectByStatusLocationRank(Point location, Distance distance) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Cook> getByDish(Dish dish) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Cook> getByDish(String dishName) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

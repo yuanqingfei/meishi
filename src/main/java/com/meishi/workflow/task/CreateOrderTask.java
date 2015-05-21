@@ -14,11 +14,11 @@ import org.springframework.util.Assert;
 import com.meishi.model.Administrator;
 import com.meishi.model.Customer;
 import com.meishi.model.Dish;
-import com.meishi.model.Location;
 import com.meishi.model.Order;
 import com.meishi.model.OrderStatus;
 import com.meishi.model.OrderStatusEntry;
-import com.meishi.repository.OrderRepository;
+import com.meishi.service.CustomerService;
+import com.meishi.service.OrderService;
 
 @Component
 public class CreateOrderTask implements JavaDelegate {
@@ -26,30 +26,19 @@ public class CreateOrderTask implements JavaDelegate {
 	private Logger logger = Logger.getLogger(this.getClass());
 	
 	@Autowired
-	private OrderRepository orderRepo;
+	private OrderService orderService;
 	
-	public OrderRepository getOrderRepo() {
-		return orderRepo;
-	}
+	@Autowired
+	private CustomerService customerService;
+	
 
-	public void setOrderRepo(OrderRepository orderRepo) {
-		this.orderRepo = orderRepo;
-	}
 
 	@Override
 	public void execute(DelegateExecution exec) throws Exception {
 		Administrator admin=(Administrator)exec.getVariable("admin");
-		logger.info("admin: " + admin);
 		String meishiList=(String)exec.getVariable("meishiList");
-		logger.info("meishiList: " + meishiList);
-		String clientLocation = (String)exec.getVariable("clientLocation");
-		logger.info("clientLocation: " + clientLocation);
 		String clientId = (String)exec.getVariable("clientId");
-		logger.info("clientId: " + clientId);
-		
-//		status = Prepared
-		
-		// create an order based on above
+
 		Order order = new Order();
 		order.setAdministrator(admin);
 		List<Dish> foods = new ArrayList<Dish>();
@@ -57,19 +46,8 @@ public class CreateOrderTask implements JavaDelegate {
 		meishi1.setName(meishiList);
 		foods.add(meishi1);
 		order.setFoods(foods);
-		Customer orderBy = new Customer();
-		Location location = new Location();
-		location.setStreetName(clientLocation);
-//		orderBy.setLocation(location);
-		orderBy.setName("Real_Afei");
-		orderBy.setIdentity(clientId);
+		Customer orderBy = customerService.get(clientId);
 		order.setCustomer(orderBy);
-//		Producer cookBy = new Producer();
-//		cookBy.setName("Bfei");
-//		order.setCookBy(cookBy);
-//		Transporter sendBy = new Transporter();
-//		sendBy.setName("Cfei");
-//		order.setSendBy(sendBy);
 		
 		List<OrderStatusEntry> statuses = new ArrayList<OrderStatusEntry>();
 		OrderStatusEntry entry = new OrderStatusEntry();
@@ -81,12 +59,10 @@ public class CreateOrderTask implements JavaDelegate {
 		Date orderTime = new Date();
 		order.setOrderTime(orderTime);
 		
-		orderRepo.save(order);
-
-		Order existedOrder = orderRepo.findByCustomer_IdentityAndOrderTime(clientId, orderTime);
-		Assert.notNull(existedOrder);
-		exec.setVariable("orderId", existedOrder.getId());
+		Order created = orderService.upsert(order);
+		Assert.notNull(created);
 		
+		exec.setVariable("orderId", created.getId());
 		logger.info("create an order successfully");
 
 	}

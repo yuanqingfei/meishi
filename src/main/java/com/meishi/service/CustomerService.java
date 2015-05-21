@@ -2,12 +2,15 @@ package com.meishi.service;
 
 import java.util.List;
 
-import com.meishi.model.Customer;
+import org.springframework.data.geo.Point;
 
-public interface CustomerService extends CrudInterface<Customer>{
-	
-	public abstract List<Customer> getCustomers();
-	
-	public abstract Customer getHighestValueCustomer();
+import com.meishi.model.Customer;
+import com.meishi.model.Dish;
+
+public interface CustomerService extends CrudInterface<Customer> {
+
+	public Customer getHighestValueCustomer();
+
+	public List<Dish> recommendDishes(Point location);
 
 }

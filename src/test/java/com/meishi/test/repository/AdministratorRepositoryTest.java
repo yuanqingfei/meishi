@@ -1,5 +1,8 @@
 package com.meishi.test.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -7,56 +10,88 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Point;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.meishi.MeishiRepositoryApplication;
 import com.meishi.model.Administrator;
-import com.meishi.model.Location;
 import com.meishi.model.Rank;
+import com.meishi.model.Worker;
 import com.meishi.model.WorkerStatus;
-import com.meishi.repository.AdministratorRepository;
-import com.meishi.repository.MeishiRepositoryApplication;
+import com.meishi.repository.AdminRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { MeishiRepositoryApplication.class })
 public class AdministratorRepositoryTest {
-	
+
 	@Autowired
-	private AdministratorRepository adminRepo;
-	
+	private AdminRepository adminRepo;
+
 	private Administrator admin;
-	
+
+	private Administrator anotherAdmin;
+
 	@Before
-	public void setUp(){
+	public void setUp() {
 		admin = new Administrator();
 		admin.setIdentity("8888888");
-		Location address = new Location();
-		address.setStreetName("StreetName");
-		address.setCoordinationX(25);
-		address.setCoordinationY(45);
-		admin.setAddress(address);
+		double[] point = new double[] { 5, 6 };
+		admin.setLocation(point);
 		admin.setStatus(WorkerStatus.READY);
 		admin.setRank(Rank.Rank5);
+
+		anotherAdmin = new Administrator();
+		anotherAdmin.setIdentity("999999999");
+		double[] anotherPoint = new double[] { 6, 6 };
+		anotherAdmin.setLocation(anotherPoint);
+		adminRepo.save(anotherAdmin);
+
+		List<Worker> workers = new ArrayList<Worker>();
+		workers.add(anotherAdmin);
+		admin.setWorkers(workers);
+
 		adminRepo.save(admin);
 	}
-	
+
 	@After
-	public void tearDown(){
+	public void tearDown() {
 		adminRepo.delete(admin);
+		adminRepo.delete(anotherAdmin);
 	}
-	
+
 	@Test
-	public void testFindByStatus(){
+	public void testFindByStatus() {
 		Assert.assertEquals(1, adminRepo.findByStatus(WorkerStatus.READY).size());
 	}
-	
+
 	@Test
-	public void testFindByRank(){
+	public void testFindByRank() {
 		Assert.assertEquals(1, adminRepo.findByRank(Rank.Rank5).size());
 	}
-	
+
 	@Test
-	public void testFindByIdentity(){
-		Assert.assertEquals("StreetName", adminRepo.findByIdentity("8888888").getAddress().getStreetName());
+	public void testFindByIdentity() {
+		Assert.assertNotNull(adminRepo.findByIdentity("8888888"));
+	}
+
+	@Test
+	public void testFindByLocationNear() {
+		Point point = new Point(5, 5);
+		// Distance distance = new Distance(2, Metrics.KILOMETERS);
+		Distance distance = new Distance(1);
+		List<Administrator> admins = adminRepo.findByLocationNear(point, distance);
+		Assert.assertEquals(1, admins.size());
+	}
+
+	@Test
+	public void testFindByWorker() {
+		Assert.assertNotNull(adminRepo.findByWorker(anotherAdmin));
+	}
+
+	@Test
+	public void testFindByWorkerIdentity() {
+		Assert.assertNotNull(adminRepo.findByWorker(anotherAdmin.getIdentity()));
 	}
 
 }
