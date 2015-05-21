@@ -7,6 +7,7 @@ import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
+import com.meishi.model.Administrator;
 import com.meishi.model.Cook;
 import com.meishi.model.Dish;
 import com.meishi.model.Rank;
@@ -51,7 +52,6 @@ public class CookServiceImpl implements CookService {
 		return cookRepo.findByStatus(WorkerStatus.READY);
 	}
 
-
 	@Override
 	public List<Cook> getRankHighest() {
 		return cookRepo.findByRank(Rank.Rank5);
@@ -90,5 +90,19 @@ public class CookServiceImpl implements CookService {
 	public List<Cook> getByDish(String dishName) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void occupy(String identity) {
+		Cook entity = cookRepo.findByIdentity(identity);
+		entity.setStatus(WorkerStatus.BUSY);
+		cookRepo.save(entity);
+	}
+
+	@Override
+	public void release(String identity) {
+		Cook entity = cookRepo.findByIdentity(identity);
+		entity.setStatus(WorkerStatus.READY);
+		cookRepo.save(entity);
 	}
 }

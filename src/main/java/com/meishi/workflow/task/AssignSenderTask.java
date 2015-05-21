@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import com.meishi.model.Cook;
 import com.meishi.model.Order;
 import com.meishi.model.Sender;
-import com.meishi.model.WorkerStatus;
 import com.meishi.service.OrderService;
 import com.meishi.service.SenderService;
 
@@ -32,23 +31,21 @@ public class AssignSenderTask implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution exec) throws Exception {
 		List<Cook> cooks = (List<Cook>) exec.getVariable("cooks");
-		Cook cook = cooks.get(0);
-		double[] cookAddress = cook.getLocation();
-
-		Sender sender = senderService.selectByStatusLocationRank(new Point(cookAddress[0], cookAddress[1]),
-				new Distance(2));
-		sender.setStatus(WorkerStatus.BUSY);
-		
-		Order order = orderService.get("orderId");
 		
 		List<Sender> senders = new ArrayList<Sender>();
-		senders.add(sender);
-		order.setSenders(senders);
+		for(Cook cook : cooks){
+			double[] cookAddress = cook.getLocation();
+			Sender sender = senderService.selectByStatusLocationRank(new Point(cookAddress[0], cookAddress[1]),
+					new Distance(2));
+			senders.add(sender);
+		}
 		
-		orderService.upsert(order);
+//		Order order = orderService.get("orderId");
+//		order.setSenders(senders);
+//		orderService.upsert(order);
 
-		exec.setVariable("sender", sender);
-		logger.info("###### assign sender to " + sender);
+		exec.setVariable("senders", senders);
+		logger.info("###### assign sender to " + senders);
 	}
 
 }

@@ -26,15 +26,15 @@ public class Dish implements Serializable {
 
 	private List<String> comments;
 
-	private Cook cook;
-
-	public Cook getCook() {
-		return cook;
-	}
-
-	public void setCook(Cook cook) {
-		this.cook = cook;
-	}
+//	private Cook cook;
+//
+//	public Cook getCook() {
+//		return cook;
+//	}
+//
+//	public void setCook(Cook cook) {
+//		this.cook = cook;
+//	}
 
 	public String getName() {
 		return name;

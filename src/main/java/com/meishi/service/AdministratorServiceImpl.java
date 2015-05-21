@@ -116,4 +116,18 @@ public class AdministratorServiceImpl implements AdministratorService {
 		return adminRepo.findByWorker(identity);
 	}
 
+	@Override
+	public void occupy(String identity) {
+		Administrator entity = adminRepo.findByIdentity(identity);
+		entity.setStatus(WorkerStatus.BUSY);
+		adminRepo.save(entity);
+	}
+
+	@Override
+	public void release(String identity) {
+		Administrator entity = adminRepo.findByIdentity(identity);
+		entity.setStatus(WorkerStatus.READY);
+		adminRepo.save(entity);
+	}
+
 }

@@ -37,11 +37,8 @@ public class AssignCookTask implements JavaDelegate {
 			List<Cook> cooks = cookService.getByDish(dishName);
 			resultCooks.addAll(cooks);
 		}
-		for(Cook cook : resultCooks){
-			cook.setStatus(WorkerStatus.BUSY);
-		}
 		
-		exec.setVariable("cooks", resultCooks);
+		exec.setVariable("cooks", new ArrayList<Cook>(resultCooks));
 		logger.info("###### assign cook to " + resultCooks );
 		
 	}

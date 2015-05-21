@@ -102,4 +102,18 @@ public class SenderServiceImpl implements SenderService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void occupy(String identity) {
+		Sender entity = senderRepo.findByIdentity(identity);
+		entity.setStatus(WorkerStatus.BUSY);
+		senderRepo.save(entity);
+	}
+
+	@Override
+	public void release(String identity) {
+		Sender entity = senderRepo.findByIdentity(identity);
+		entity.setStatus(WorkerStatus.READY);
+		senderRepo.save(entity);
+	}
 }

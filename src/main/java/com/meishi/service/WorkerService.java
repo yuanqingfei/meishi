@@ -10,14 +10,18 @@ import com.meishi.model.WorkerStatus;
 
 public interface WorkerService<T extends Worker> extends CrudInterface<T> {
 
-	public abstract List<T> getAll(WorkerStatus status);
+	public List<T> getAll(WorkerStatus status);
 
-	public abstract List<T> getAllAvailable();
+	public List<T> getAllAvailable();
 
-	public abstract T selectByStatusLocationRank(Point location, Distance distance);
+	public T selectByStatusLocationRank(Point location, Distance distance);
 
-	public abstract List<T> getRankHighest();
+	public List<T> getRankHighest();
 
-	public abstract void disable(String identity);
+	public void disable(String identity);
+	
+	public void occupy(String identity);
+	
+	public void release(String identity);
 
 }

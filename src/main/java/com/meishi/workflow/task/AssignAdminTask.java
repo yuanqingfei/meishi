@@ -43,7 +43,8 @@ public class AssignAdminTask implements JavaDelegate {
 		exec.setVariable("normlizedClientLocation", point);
 		
 		Administrator admin = adminService.selectByStatusLocationRank(point, new Distance(2));
-		admin.setStatus(WorkerStatus.BUSY);
+		adminService.occupy(admin.getIdentity());
+		
 		exec.setVariable("admin", admin);
 
 		logger.info("assign admin to " + admin);
