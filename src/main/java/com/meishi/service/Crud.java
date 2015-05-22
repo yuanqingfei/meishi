@@ -2,7 +2,7 @@ package com.meishi.service;
 
 import java.util.List;
 
-public interface CrudInterface<T> {
+public interface Crud<T> {
 	
 	public abstract T upsert(T entity);
 
@@ -15,5 +15,7 @@ public interface CrudInterface<T> {
 	public abstract Long count();
 	
 	public abstract List<T> getAll();
+	
+	public void deleteAll();
 
 }

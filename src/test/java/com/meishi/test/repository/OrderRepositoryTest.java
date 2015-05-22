@@ -21,6 +21,7 @@ import com.meishi.model.Customer;
 import com.meishi.model.Dish;
 import com.meishi.model.Order;
 import com.meishi.model.Sender;
+import com.meishi.repository.DishRepository;
 import com.meishi.repository.OrderRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,6 +32,9 @@ public class OrderRepositoryTest {
 
 	@Autowired
 	private OrderRepository orderRepo;
+	
+	@Autowired
+	private DishRepository dishRepo;
 
 	private Order order;
 
@@ -46,14 +50,12 @@ public class OrderRepositoryTest {
 
 	@Before
 	public void setUp() {
-		Assert.assertNotNull(orderRepo);
+		orderRepo.deleteAll();
 
 		order = new Order();
-		List<Dish> foods = new ArrayList<Dish>();
 		Dish meishi1 = new Dish();
 		meishi1.setName("LaZiJiDing");
-		foods.add(meishi1);
-		order.setFoods(foods);
+		Dish saved = dishRepo.save(meishi1);
 
 		customer = new Customer();
 		customer.setName("Customer");
@@ -63,7 +65,7 @@ public class OrderRepositoryTest {
 		cook = new Cook();
 		cook.setName("³øÊ¦ÕÅ");
 		cook.setIdentity("1234567Cook");
-		cook.setDishes(foods);
+		cook.getDishIds().add(saved.getId());
 		List<Cook> cooks = new ArrayList<Cook>();
 		cooks.add(cook);
 		order.setCooks(cooks);

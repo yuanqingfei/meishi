@@ -9,6 +9,7 @@ import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
 import com.meishi.model.Administrator;
+import com.meishi.model.Constants;
 import com.meishi.model.Customer;
 import com.meishi.model.WorkerStatus;
 import com.meishi.service.AdministratorService;
@@ -30,7 +31,7 @@ public class AssignAdminTask implements JavaDelegate {
 		String clientLocation = (String) exec.getVariable("clientLocation");
 		String clientId = (String) exec.getVariable("clientId");
 		double[] location = new double[] {};
-		if (clientLocation == null) {
+		if (clientLocation == null || clientLocation.length() == 0) {
 			Customer customer = customerService.get(clientId);
 			location = customer.getLocation();
 		} else {
@@ -38,15 +39,13 @@ public class AssignAdminTask implements JavaDelegate {
 			location[0] = Double.valueOf(address[0]);
 			location[1] = Double.valueOf(address[1]);
 		}
-
 		Point point = new Point(location[0], location[1]);
-		exec.setVariable("normlizedClientLocation", point);
 		
-		Administrator admin = adminService.selectByStatusLocationRank(point, new Distance(2));
+		Administrator admin = adminService.selectByStatusLocationRank(point, Constants.DEFAULT_DISTANCE);
+		exec.setVariable("admin", admin);
+		
 		adminService.occupy(admin.getIdentity());
 		
-		exec.setVariable("admin", admin);
-
 		logger.info("assign admin to " + admin);
 	}
 

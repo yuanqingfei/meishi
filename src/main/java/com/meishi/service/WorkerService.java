@@ -8,7 +8,7 @@ import org.springframework.data.geo.Point;
 import com.meishi.model.Worker;
 import com.meishi.model.WorkerStatus;
 
-public interface WorkerService<T extends Worker> extends CrudInterface<T> {
+public interface WorkerService<T extends Worker> extends Crud<T> {
 
 	public List<T> getAll(WorkerStatus status);
 
@@ -17,7 +17,7 @@ public interface WorkerService<T extends Worker> extends CrudInterface<T> {
 	public T selectByStatusLocationRank(Point location, Distance distance);
 
 	public List<T> getRankHighest();
-
+	
 	public void disable(String identity);
 	
 	public void occupy(String identity);

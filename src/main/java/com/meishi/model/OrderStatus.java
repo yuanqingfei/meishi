@@ -10,7 +10,7 @@ public enum OrderStatus {
 	SUCCESS("Cash In, Complete!"),
 	FAILURE("Customer Is Not Satisfied, Refund");
 	
-	private String description;
+	String description;
 	
 	OrderStatus(String description){
 		this.description = description;

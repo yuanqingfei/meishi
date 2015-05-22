@@ -14,6 +14,8 @@ import com.meishi.repository.SenderRepository;
 
 @Component
 public class SenderServiceImpl implements SenderService {
+	
+	private WorkerFinder workerFinder;
 
 	@Autowired
 	private SenderRepository senderRepo;
@@ -50,31 +52,6 @@ public class SenderServiceImpl implements SenderService {
 		return senderRepo.findByStatus(WorkerStatus.READY);
 	}
 
-//	@Override
-//	public Sender getNearest(Location location) {
-//		String streetName = location.getStreetName();
-//		double x = location.getCoordinationX();
-//		double y = location.getCoordinationY();
-//		List<Sender> senders = getAllAvailable();
-//		double shortestDistance = 100;
-//		Sender selected = null;
-//		for (Sender sender : senders) {
-//			Location senderLocation = sender.getAddress();
-//			String senderStreetName = senderLocation.getStreetName();
-//			double senderX = senderLocation.getCoordinationX();
-//			double senderY = senderLocation.getCoordinationY();
-//			if (senderStreetName != null && senderStreetName.equalsIgnoreCase(streetName)) {
-//				return sender;
-//			}
-//			double currentDistance = Math.sqrt((senderX - x) * (senderX - x) + (senderY - y) * (senderY - y));
-//			if (currentDistance < shortestDistance) {
-//				shortestDistance = currentDistance;
-//				selected = sender;
-//			}
-//		}
-//		return selected;
-//	}
-
 	@Override
 	public List<Sender> getRankHighest() {
 		return senderRepo.findByRank(Rank.Rank5);
@@ -99,8 +76,8 @@ public class SenderServiceImpl implements SenderService {
 
 	@Override
 	public Sender selectByStatusLocationRank(Point location, Distance distance) {
-		// TODO Auto-generated method stub
-		return null;
+		workerFinder = new WorkerFinderImpl(senderRepo);
+		return (Sender) workerFinder.findWorker(location, distance);
 	}
 	
 	@Override
@@ -115,5 +92,10 @@ public class SenderServiceImpl implements SenderService {
 		Sender entity = senderRepo.findByIdentity(identity);
 		entity.setStatus(WorkerStatus.READY);
 		senderRepo.save(entity);
+	}
+	
+	@Override
+	public void deleteAll() {
+		senderRepo.deleteAll();
 	}
 }

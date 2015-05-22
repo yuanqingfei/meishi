@@ -28,11 +28,6 @@ public class AdministratorServiceTest {
 	public void setUp() {
 		admin = new Administrator();
 		admin.setIdentity("8888888");
-//		Location address = new Location();
-//		address.setStreetName("StreetName");
-//		address.setCoordinationX(25);
-//		address.setCoordinationY(45);
-//		admin.setAddress(address);
 		admin.setStatus(WorkerStatus.READY);
 		admin.setRank(Rank.Rank5);
 		adminService.upsert(admin);

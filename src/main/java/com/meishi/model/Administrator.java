@@ -1,6 +1,7 @@
 package com.meishi.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -8,14 +9,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class Administrator extends Worker implements Serializable {
 
-	private List<Worker> workers;
+	private List<String> directWorkerIds = new ArrayList<String>();
 
-	public List<Worker> getWorkers() {
-		return workers;
-	}
-
-	public void setWorkers(List<Worker> workers) {
-		this.workers = workers;
+	public List<String> getDirectWorkerIds() {
+		return directWorkerIds;
 	}
 
 	/**

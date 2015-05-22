@@ -1,7 +1,5 @@
 package com.meishi.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,8 @@ import com.meishi.repository.AdminRepository;
 
 @Component
 public class AdministratorServiceImpl implements AdministratorService {
+
+	private WorkerFinder workerFinder;
 
 	@Autowired
 	private AdminRepository adminRepo;
@@ -60,60 +60,9 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public void disable(String identity) {
-		Administrator admin = get(identity);
+		Administrator admin = adminRepo.findByIdentity(identity);
 		admin.setStatus(WorkerStatus.DISABLE);
 		adminRepo.save(admin);
-	}
-
-	@Override
-	public Long count() {
-		return adminRepo.count();
-	}
-
-	@Override
-	public Administrator get(String identity) {
-		return adminRepo.findByIdentity(identity);
-	}
-
-	@Override
-	public Administrator selectByStatusLocationRank(Point location, Distance distance) {
-		List<Administrator> statusSet = getAllAvailable();
-		List<Administrator> locationSet = adminRepo.findByLocationNear(location, distance);
-		List<Administrator> joinSet = join(statusSet, locationSet);
-		if (joinSet == null || joinSet.size() == 0) {
-			throw new RuntimeException("Can not find correct admin based on: " + location + " " + distance);
-		}
-
-		Collections.sort(joinSet);
-		Collections.reverse(joinSet);
-
-		// return highest rank
-		return joinSet.get(0);
-	}
-
-	private List<Administrator> join(List<Administrator> statusSet, List<Administrator> locationSet) {
-		List<Administrator> result = new ArrayList<Administrator>();
-		if (statusSet == null || statusSet.size() == 0) {
-			return null;
-		}
-		if (locationSet == null || locationSet.size() == 0) {
-			return null;
-		}
-		for (Administrator admin : statusSet) {
-			if (locationSet.contains(admin))
-			result.add(admin);
-		}
-		return result;
-	}
-
-	@Override
-	public Administrator getByWorker(Worker worker) {
-		return adminRepo.findByWorker(worker);
-	}
-
-	@Override
-	public Administrator getByWorker(String identity) {
-		return adminRepo.findByWorker(identity);
 	}
 
 	@Override
@@ -128,6 +77,37 @@ public class AdministratorServiceImpl implements AdministratorService {
 		Administrator entity = adminRepo.findByIdentity(identity);
 		entity.setStatus(WorkerStatus.READY);
 		adminRepo.save(entity);
+	}
+
+	@Override
+	public Long count() {
+		return adminRepo.count();
+	}
+
+	@Override
+	public Administrator get(String identity) {
+		return adminRepo.findByIdentity(identity);
+	}
+
+	@Override
+	public Administrator selectByStatusLocationRank(Point location, Distance distance) {
+		workerFinder = new WorkerFinderImpl(adminRepo);
+		return (Administrator) workerFinder.findWorker(location, distance);
+	}
+
+	@Override
+	public Administrator getByWorker(Worker worker) {
+		return adminRepo.findByWorker(worker);
+	}
+
+	@Override
+	public Administrator getByWorker(String identity) {
+		return adminRepo.findByWorker(identity);
+	}
+
+	@Override
+	public void deleteAll() {
+		adminRepo.deleteAll();
 	}
 
 }

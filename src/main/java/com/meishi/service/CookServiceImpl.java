@@ -16,6 +16,8 @@ import com.meishi.repository.CookRepository;
 
 @Component
 public class CookServiceImpl implements CookService {
+	
+	private WorkerFinder workerFinder;
 
 	@Autowired
 	private CookRepository cookRepo;
@@ -65,34 +67,6 @@ public class CookServiceImpl implements CookService {
 	}
 
 	@Override
-	public Long count() {
-		return cookRepo.count();
-	}
-
-	@Override
-	public Cook get(String identity) {
-		return cookRepo.findByIdentity(identity);
-	}
-
-	@Override
-	public Cook selectByStatusLocationRank(Point location, Distance distance) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Cook> getByDish(Dish dish) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Cook> getByDish(String dishName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void occupy(String identity) {
 		Cook entity = cookRepo.findByIdentity(identity);
 		entity.setStatus(WorkerStatus.BUSY);
@@ -105,4 +79,36 @@ public class CookServiceImpl implements CookService {
 		entity.setStatus(WorkerStatus.READY);
 		cookRepo.save(entity);
 	}
+
+	@Override
+	public Long count() {
+		return cookRepo.count();
+	}
+
+	@Override
+	public Cook get(String identity) {
+		return cookRepo.findByIdentity(identity);
+	}
+
+	@Override
+	public Cook selectByStatusLocationRank(Point location, Distance distance) {
+		workerFinder = new WorkerFinderImpl(cookRepo);
+		return (Cook) workerFinder.findWorker(location, distance);
+	}
+
+	@Override
+	public List<Cook> getByDish(Dish dish) {
+		return cookRepo.findByDish(dish);
+	}
+
+	@Override
+	public List<Cook> getByDish(String dishName) {
+		return cookRepo.findByDish(dishName);
+	}
+
+	@Override
+	public void deleteAll() {
+		cookRepo.deleteAll();
+	}
+
 }

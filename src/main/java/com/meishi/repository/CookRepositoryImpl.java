@@ -1,5 +1,6 @@
 package com.meishi.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -18,6 +19,9 @@ public class CookRepositoryImpl implements CookRepositoryCustom {
 	@Autowired
 	private MongoOperations operations;
 
+	@Autowired
+	private DishRepository dishRepo;
+
 	@Override
 	public List<Cook> findByDish(Dish dish) {
 		return findByDish(dish.getName());
@@ -25,8 +29,10 @@ public class CookRepositoryImpl implements CookRepositoryCustom {
 
 	@Override
 	public List<Cook> findByDish(String dishName) {
-		Query query = new Query(Criteria.where("dishes").elemMatch(Criteria.where("name").is(dishName)));
-		List<Cook> result = operations.find(query, Cook.class);
+		List<Cook> result = new ArrayList<Cook>();
+		Dish dish = dishRepo.findByName(dishName);
+		Query query = new Query(Criteria.where("dishIds").all(dish.getId()));
+		result.addAll(operations.find(query, Cook.class));
 
 		if (result.size() == 0) {
 			String errorMessage = "This dish " + dishName + " has no cook, but exposed to customer";

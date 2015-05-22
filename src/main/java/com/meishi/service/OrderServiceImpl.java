@@ -3,19 +3,23 @@ package com.meishi.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.meishi.model.Cook;
 import com.meishi.model.Order;
 import com.meishi.model.Sender;
+import com.meishi.repository.OrderRepository;
 
 @Component
 public class OrderServiceImpl implements OrderService {
 
+	@Autowired
+	private OrderRepository orderRepo;
+
 	@Override
 	public Order upsert(Order entity) {
-		// TODO Auto-generated method stub
-		return null;
+		return orderRepo.save(entity);
 	}
 
 	@Override
@@ -224,8 +228,13 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Order getOne(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return orderRepo.findOne(id);
+	}
+
+	@Override
+	public void deleteAll() {
+		orderRepo.deleteAll();
+
 	}
 
 }

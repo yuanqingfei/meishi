@@ -18,6 +18,7 @@ import com.meishi.model.Order;
 import com.meishi.model.OrderStatus;
 import com.meishi.model.OrderStatusEntry;
 import com.meishi.service.CustomerService;
+import com.meishi.service.DishService;
 import com.meishi.service.OrderService;
 
 @Component
@@ -31,6 +32,9 @@ public class CreateOrderTask implements JavaDelegate {
 	@Autowired
 	private CustomerService customerService;
 	
+	@Autowired
+	private DishService dishService;
+	
 
 
 	@Override
@@ -41,11 +45,15 @@ public class CreateOrderTask implements JavaDelegate {
 
 		Order order = new Order();
 		order.setAdministrator(admin);
+		
 		List<Dish> foods = new ArrayList<Dish>();
-		Dish meishi1 = new Dish();
-		meishi1.setName(meishiList);
-		foods.add(meishi1);
+		String[] meishiNames = meishiList.split(",");
+		exec.setVariable("meishiNames", meishiNames);
+		for(String dishName : meishiNames){
+			foods.add(dishService.getDishesByName(dishName));
+		}
 		order.setFoods(foods);
+		
 		Customer orderBy = customerService.get(clientId);
 		order.setCustomer(orderBy);
 		
@@ -60,7 +68,6 @@ public class CreateOrderTask implements JavaDelegate {
 		order.setOrderTime(orderTime);
 		
 		Order created = orderService.upsert(order);
-		Assert.notNull(created);
 		
 		exec.setVariable("orderId", created.getId());
 		logger.info("create an order successfully");

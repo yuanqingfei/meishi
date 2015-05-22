@@ -3,9 +3,8 @@ package com.meishi.test.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +19,7 @@ import com.meishi.model.Customer;
 import com.meishi.model.Dish;
 import com.meishi.repository.CookRepository;
 import com.meishi.repository.CustomerRepository;
+import com.meishi.repository.DishRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { MeishiRepositoryApplication.class })
@@ -30,6 +30,9 @@ public class CustomerRepositoryTest {
 
 	@Autowired
 	private CookRepository cookRepo;
+	
+	@Autowired
+	private DishRepository dishRepo;
 
 	private Cook cook;
 
@@ -43,6 +46,8 @@ public class CustomerRepositoryTest {
 
 	@Before
 	public void setUp() {
+		customerRepo.deleteAll();
+		
 		customer = new Customer();
 		customer.setIdentity("8888888");
 		double[] point = new double[] { 5, 5 };
@@ -55,9 +60,8 @@ public class CustomerRepositoryTest {
 		cook.setLocation(point1);
 		dish = new Dish();
 		dish.setName("LaZiJi");
-		List<Dish> dishes = new ArrayList<Dish>();
-		dishes.add(dish);
-		cook.setDishes(dishes);
+		Dish existed = dishRepo.save(dish);
+		cook.getDishIds().add(existed.getId());
 		cookRepo.save(cook);
 
 		cook2 = new Cook();
@@ -66,9 +70,8 @@ public class CustomerRepositoryTest {
 		cook2.setLocation(point2);
 		dish2 = new Dish();
 		dish2.setName("HuLaTang");
-		List<Dish> dishes2 = new ArrayList<Dish>();
-		dishes2.add(dish2);
-		cook2.setDishes(dishes2);
+		Dish existed2 = dishRepo.save(dish2);
+		cook.getDishIds().add(existed2.getId());
 		cookRepo.save(cook2);
 	}
 

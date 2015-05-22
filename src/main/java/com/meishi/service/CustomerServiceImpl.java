@@ -2,43 +2,49 @@ package com.meishi.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
 import com.meishi.model.Customer;
 import com.meishi.model.Dish;
+import com.meishi.repository.CustomerRepository;
 
 @Component
 public class CustomerServiceImpl implements CustomerService {
+	
+	@Autowired
+	private CustomerRepository customerRepo;
+
+	@Override
+	public void deleteAll() {
+		customerRepo.deleteAll();
+	}
 
 	@Override
 	public Customer upsert(Customer entity) {
-		// TODO Auto-generated method stub
-		return null;
+		return customerRepo.save(entity);
 	}
 
 	@Override
 	public void delete(String identity) {
-		// TODO Auto-generated method stub
+		customerRepo.delete(get(identity));
 
 	}
 
 	@Override
 	public Customer get(String identity) {
-		// TODO Auto-generated method stub
-		return null;
+		return customerRepo.findByIdentity(identity);
 	}
 
 	@Override
 	public Boolean isExisted(String identity) {
-		// TODO Auto-generated method stub
-		return null;
+		return customerRepo.exists(get(identity).getId());
 	}
 
 	@Override
 	public Long count() {
-		// TODO Auto-generated method stub
-		return null;
+		return customerRepo.count();
 	}
 
 	@Override
@@ -49,14 +55,12 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public List<Customer> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return customerRepo.findAll();
 	}
 
 	@Override
 	public List<Dish> recommendDishes(Point location) {
-		// TODO Auto-generated method stub
-		return null;
+		return customerRepo.recommendDishes(location);
 	}
 
 }

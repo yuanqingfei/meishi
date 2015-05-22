@@ -34,22 +34,20 @@ public class AdministratorRepositoryTest {
 
 	@Before
 	public void setUp() {
+		adminRepo.deleteAll();
+		
 		admin = new Administrator();
 		admin.setIdentity("8888888");
 		double[] point = new double[] { 5, 6 };
 		admin.setLocation(point);
-		admin.setStatus(WorkerStatus.READY);
 		admin.setRank(Rank.Rank5);
 
 		anotherAdmin = new Administrator();
 		anotherAdmin.setIdentity("999999999");
 		double[] anotherPoint = new double[] { 6, 6 };
 		anotherAdmin.setLocation(anotherPoint);
-		adminRepo.save(anotherAdmin);
-
-		List<Worker> workers = new ArrayList<Worker>();
-		workers.add(anotherAdmin);
-		admin.setWorkers(workers);
+		Administrator existed = adminRepo.save(anotherAdmin);
+		admin.getDirectWorkerIds().add(existed.getIdentity());
 
 		adminRepo.save(admin);
 	}
@@ -62,7 +60,7 @@ public class AdministratorRepositoryTest {
 
 	@Test
 	public void testFindByStatus() {
-		Assert.assertEquals(1, adminRepo.findByStatus(WorkerStatus.READY).size());
+		Assert.assertEquals(2, adminRepo.findByStatus(WorkerStatus.READY).size());
 	}
 
 	@Test

@@ -11,6 +11,7 @@ import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
+import com.meishi.model.Constants;
 import com.meishi.model.Cook;
 import com.meishi.model.Order;
 import com.meishi.model.Sender;
@@ -23,26 +24,19 @@ public class AssignSenderTask implements JavaDelegate {
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired
-	private OrderService orderService;
-
-	@Autowired
 	private SenderService senderService;
 
 	@Override
 	public void execute(DelegateExecution exec) throws Exception {
 		List<Cook> cooks = (List<Cook>) exec.getVariable("cooks");
-		
+
 		List<Sender> senders = new ArrayList<Sender>();
-		for(Cook cook : cooks){
+		for (Cook cook : cooks) {
 			double[] cookAddress = cook.getLocation();
 			Sender sender = senderService.selectByStatusLocationRank(new Point(cookAddress[0], cookAddress[1]),
-					new Distance(2));
+					Constants.DEFAULT_DISTANCE);
 			senders.add(sender);
 		}
-		
-//		Order order = orderService.get("orderId");
-//		order.setSenders(senders);
-//		orderService.upsert(order);
 
 		exec.setVariable("senders", senders);
 		logger.info("###### assign sender to " + senders);

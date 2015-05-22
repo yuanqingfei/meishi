@@ -7,7 +7,7 @@ import com.meishi.model.Cook;
 import com.meishi.model.Order;
 import com.meishi.model.Sender;
 
-public interface OrderService extends CrudInterface<Order> {
+public interface OrderService extends Crud<Order> {
 	
 	public Order getOne(String id);
 

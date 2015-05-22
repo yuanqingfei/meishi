@@ -1,6 +1,7 @@
 package com.meishi.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,14 +16,10 @@ public class Cook extends Worker implements Serializable {
 
 	private String healthCard;
 
-	private List<Dish> dishes;
+	private List<String> dishIds = new ArrayList<String>();
 
-	public List<Dish> getDishes() {
-		return dishes;
-	}
-
-	public void setDishes(List<Dish> dishes) {
-		this.dishes = dishes;
+	public List<String> getDishIds() {
+		return dishIds;
 	}
 
 	public String getHealthCard() {
@@ -35,7 +32,7 @@ public class Cook extends Worker implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Producer " + super.toString() + " [healthCard=" + healthCard + "]";
+		return "Cook " + super.toString() + " [healthCard=" + healthCard + "]";
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.meishi.test.service;
+package com.meishi.test.client;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
-import com.meishi.test.client.RestClientApplication;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { RestClientApplication.class })
 public class RemoteOrderRestServiceTest {
@@ -25,7 +23,7 @@ public class RemoteOrderRestServiceTest {
 	
 	@Test
 	public void testCreateOrder(){
-		String request = "{\"meishiList\" : \"À±×Ó¼¦¶¡\", \"clientLocation\" : \"VVVVVVVVVV\", \"clientId\" : \"9999999\"}";
+		String request = "{\"meishiList\" : \"Dish2\", \"clientLocation\" : \"\", \"clientId\" : \"123456789\"}";
 		postRequestOK("http://localhost:8080/meishi/createOrder", request);
 	}
 	

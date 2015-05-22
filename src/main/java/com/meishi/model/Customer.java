@@ -1,12 +1,13 @@
 package com.meishi.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class Customer extends Person implements Serializable{
+public class Customer extends Person implements Serializable {
 	/**
 	 * 
 	 */
@@ -14,15 +15,11 @@ public class Customer extends Person implements Serializable{
 	private String appetite;
 	private Boolean registered;
 	private String registerId;
-	
-	private List<Dish> recent5Dishes;
-	
-	public List<Dish> getRecent5Dishes() {
-		return recent5Dishes;
-	}
 
-	public void setRecent5Dishes(List<Dish> recent5Dishes) {
-		this.recent5Dishes = recent5Dishes;
+	private List<String> recent5DishId = new ArrayList<String>();
+
+	public List<String> getRecent5DishId() {
+		return recent5DishId;
 	}
 
 	public String getAppetite() {

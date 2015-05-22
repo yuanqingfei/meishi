@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-public class Dish implements Serializable {
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
+public class Dish extends MongoDocument implements Serializable {
 
 	/**
 	 * 
@@ -22,19 +25,7 @@ public class Dish implements Serializable {
 
 	private Byte[] image;
 
-	private DishStatus status;
-
 	private List<String> comments;
-
-//	private Cook cook;
-//
-//	public Cook getCook() {
-//		return cook;
-//	}
-//
-//	public void setCook(Cook cook) {
-//		this.cook = cook;
-//	}
 
 	public String getName() {
 		return name;
@@ -76,14 +67,6 @@ public class Dish implements Serializable {
 		this.image = image;
 	}
 
-	public DishStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(DishStatus status) {
-		this.status = status;
-	}
-
 	public List<String> getComments() {
 		return comments;
 	}
@@ -120,7 +103,7 @@ public class Dish implements Serializable {
 	@Override
 	public String toString() {
 		return "Meishi [name=" + name + ", price=" + price + ", stars=" + stars + ", description=" + description
-				+ ", image=" + Arrays.toString(image) + ", status=" + status + ", comments=" + comments + "]";
+				+ ", comments=" + comments + "]";
 	}
 
 	// public Boolean isAvaiable(){

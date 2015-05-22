@@ -6,4 +6,5 @@ import com.meishi.model.Customer;
 
 public interface CustomerRepository extends MongoRepository<Customer, String>, CustomerRepositoryCustom {
 
+	public Customer findByIdentity(String identity);
 }

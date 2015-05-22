@@ -15,7 +15,7 @@ public interface WorkerRepository<T extends Worker> {
 
 	public List<T> findByRank(Rank rank);
 
-	public T findByIdentity(String identity);
-	
 	public List<T> findByLocationNear(Point location, Distance distance);
+
+	public T findByIdentity(String identity);
 }

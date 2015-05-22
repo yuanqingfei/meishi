@@ -77,7 +77,7 @@ public class TrackOrderTask {
 		this.execution = execution;
 		List<Sender> senders = (List<Sender>) execution.getVariable("senders");
 		for (Sender sender : senders) {
-			cookService.release(sender.getIdentity());
+			senderService.release(sender.getIdentity());
 		}
 		updateOrderStatusTo(OrderStatus.SENT);
 	}

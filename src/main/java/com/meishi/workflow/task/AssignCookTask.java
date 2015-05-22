@@ -12,35 +12,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.meishi.model.Cook;
-import com.meishi.model.Order;
-import com.meishi.model.WorkerStatus;
 import com.meishi.service.CookService;
 import com.meishi.service.OrderService;
 
 @Component
 public class AssignCookTask implements JavaDelegate {
-	
+
 	private static final Logger logger = Logger.getLogger(AssignCookTask.class);
-	
-	@Autowired
-	private OrderService orderService;
-	
+
 	@Autowired
 	private CookService cookService;
 
 	@Override
 	public void execute(DelegateExecution exec) throws Exception {
-		
-		String[] meishiNames = ((String)exec.getVariable("meishiList")).split(",");
+
+		String[] meishiNames = ((String[]) exec.getVariable("meishiNames"));
+
+		// use set to filter duplicate cook
 		Set<Cook> resultCooks = new HashSet<Cook>();
-		for(String dishName : meishiNames){
+		for (String dishName : meishiNames) {
 			List<Cook> cooks = cookService.getByDish(dishName);
 			resultCooks.addAll(cooks);
 		}
-		
+
 		exec.setVariable("cooks", new ArrayList<Cook>(resultCooks));
-		logger.info("###### assign cook to " + resultCooks );
-		
+		logger.info("###### assign cook to " + resultCooks);
+
 	}
 
 }
