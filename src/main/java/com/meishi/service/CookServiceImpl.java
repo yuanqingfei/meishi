@@ -2,25 +2,30 @@ package com.meishi.service;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
-import com.meishi.model.Administrator;
 import com.meishi.model.Cook;
-import com.meishi.model.Dish;
 import com.meishi.model.Rank;
 import com.meishi.model.WorkerStatus;
 import com.meishi.repository.CookRepository;
 
 @Component
 public class CookServiceImpl implements CookService {
-	
-	private WorkerFinder workerFinder;
 
 	@Autowired
 	private CookRepository cookRepo;
+
+	private WorkerFinder<Cook> workerFinder;
+
+	@PostConstruct
+	public void setUpRepo() {
+		workerFinder = new WorkerFinderImpl<Cook>(cookRepo);
+	}
 
 	@Override
 	public Cook upsert(Cook entity) {
@@ -92,13 +97,7 @@ public class CookServiceImpl implements CookService {
 
 	@Override
 	public Cook selectByStatusLocationRank(Point location, Distance distance) {
-		workerFinder = new WorkerFinderImpl(cookRepo);
-		return (Cook) workerFinder.findWorker(location, distance);
-	}
-
-	@Override
-	public List<Cook> getByDish(Dish dish) {
-		return cookRepo.findByDish(dish);
+		return workerFinder.findWorker(location, distance);
 	}
 
 	@Override

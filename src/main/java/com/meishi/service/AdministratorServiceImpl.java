@@ -2,6 +2,8 @@ package com.meishi.service;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
@@ -9,17 +11,21 @@ import org.springframework.stereotype.Component;
 
 import com.meishi.model.Administrator;
 import com.meishi.model.Rank;
-import com.meishi.model.Worker;
 import com.meishi.model.WorkerStatus;
 import com.meishi.repository.AdminRepository;
 
 @Component
 public class AdministratorServiceImpl implements AdministratorService {
 
-	private WorkerFinder workerFinder;
-
 	@Autowired
 	private AdminRepository adminRepo;
+
+	private WorkerFinder<Administrator> workerFinder;
+
+	@PostConstruct
+	public void setUpRepo() {
+		workerFinder = new WorkerFinderImpl<Administrator>(adminRepo);
+	}
 
 	@Override
 	public Administrator upsert(Administrator entity) {
@@ -28,13 +34,13 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public void delete(String identity) {
-		Administrator admin = get(identity);
+		Administrator admin = adminRepo.findByIdentity(identity);
 		adminRepo.delete(admin);
 	}
 
 	@Override
 	public Boolean isExisted(String identity) {
-		Administrator admin = get(identity);
+		Administrator admin = adminRepo.findByIdentity(identity);
 		return adminRepo.exists(admin.getId());
 	}
 
@@ -91,13 +97,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public Administrator selectByStatusLocationRank(Point location, Distance distance) {
-		workerFinder = new WorkerFinderImpl(adminRepo);
-		return (Administrator) workerFinder.findWorker(location, distance);
-	}
-
-	@Override
-	public Administrator getByWorker(Worker worker) {
-		return adminRepo.findByWorker(worker);
+		return workerFinder.findWorker(location, distance);
 	}
 
 	@Override

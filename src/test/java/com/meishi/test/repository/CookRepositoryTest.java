@@ -26,7 +26,7 @@ public class CookRepositoryTest {
 
 	@Autowired
 	private CookRepository cookRepo;
-	
+
 	@Autowired
 	private DishRepository dishRepo;
 
@@ -37,30 +37,25 @@ public class CookRepositoryTest {
 	@Before
 	public void setUp() {
 		cookRepo.deleteAll();
-		
+
 		cook = new Cook();
 		cook.setIdentity("8888888");
 		double[] point = new double[] { 5, 6 };
 		cook.setLocation(point);
 		cook.setStatus(WorkerStatus.READY);
 		cook.setRank(Rank.Rank5);
-		
+
 		dish = new Dish();
 		dish.setName("LaZiJi");
 		Dish existed2 = dishRepo.save(dish);
 		cook.getDishIds().add(existed2.getId());
-		
+
 		cookRepo.save(cook);
 	}
 
 	@After
 	public void tearDown() {
 		cookRepo.delete(cook);
-	}
-
-	@Test
-	public void testFindByDish() {
-		Assert.assertNotNull(cookRepo.findByDish(dish));
 	}
 
 	@Test

@@ -2,6 +2,8 @@ package com.meishi.service;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
@@ -14,11 +16,16 @@ import com.meishi.repository.SenderRepository;
 
 @Component
 public class SenderServiceImpl implements SenderService {
-	
-	private WorkerFinder workerFinder;
 
 	@Autowired
 	private SenderRepository senderRepo;
+
+	private WorkerFinder<Sender> workerFinder;
+
+	@PostConstruct
+	public void setUpRepo() {
+		workerFinder = new WorkerFinderImpl<Sender>(senderRepo);
+	}
 
 	@Override
 	public Sender upsert(Sender entity) {
@@ -76,10 +83,9 @@ public class SenderServiceImpl implements SenderService {
 
 	@Override
 	public Sender selectByStatusLocationRank(Point location, Distance distance) {
-		workerFinder = new WorkerFinderImpl(senderRepo);
-		return (Sender) workerFinder.findWorker(location, distance);
+		return workerFinder.findWorker(location, distance);
 	}
-	
+
 	@Override
 	public void occupy(String identity) {
 		Sender entity = senderRepo.findByIdentity(identity);
@@ -93,7 +99,7 @@ public class SenderServiceImpl implements SenderService {
 		entity.setStatus(WorkerStatus.READY);
 		senderRepo.save(entity);
 	}
-	
+
 	@Override
 	public void deleteAll() {
 		senderRepo.deleteAll();

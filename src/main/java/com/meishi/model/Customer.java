@@ -17,7 +17,7 @@ public class Customer extends Person implements Serializable {
 	private String registerId;
 
 	private List<String> recent5DishId = new ArrayList<String>();
-
+	
 	public List<String> getRecent5DishId() {
 		return recent5DishId;
 	}

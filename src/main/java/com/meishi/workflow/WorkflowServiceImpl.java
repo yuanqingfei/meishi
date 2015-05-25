@@ -64,9 +64,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.meishi.service.MeishiService2#createOrder(java.util.Map)
-	 */
 	@Override
 	@Transactional
 	public void createOrder(Map<String, Object> variables) {
@@ -85,45 +82,30 @@ public class WorkflowServiceImpl implements WorkflowService {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.meishi.service.MeishiService2#cookAcceptOrder()
-	 */
 	@Override
 	@Transactional
 	public void cookAcceptOrder() {
 		completeTask(COOK_ACCEPT_TASK_ID, COOK_NAME);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.meishi.service.MeishiService2#cookDoneOrder()
-	 */
 	@Override
 	@Transactional
 	public void cookDoneOrder() {
 		completeTask(COOK_DONE_TASK_ID, COOK_NAME);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.meishi.service.MeishiService2#senderAcceptOrder()
-	 */
 	@Override
 	@Transactional
 	public void senderAcceptOrder() {
 		completeTask(SENDER_ACCEPT_TASK_ID, SENDER_NAME);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.meishi.service.MeishiService2#senderDoneOrder()
-	 */
 	@Override
 	@Transactional
 	public void senderDoneOrder() {
 		completeTask(SENDER_DONE_TASK_ID, SENDER_NAME);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.meishi.service.MeishiService2#adminEsclateOrder()
-	 */
 	@Override
 	@Transactional
 	public void adminEsclateOrder() {

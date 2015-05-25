@@ -6,9 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.meishi.model.Cook;
 import com.meishi.model.Order;
-import com.meishi.model.Sender;
 import com.meishi.repository.OrderRepository;
 
 @Component
@@ -23,39 +21,26 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public void delete(String identity) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Order get(String identity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean isExisted(String identity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Long count() {
-		// TODO Auto-generated method stub
-		return null;
+		return orderRepo.count();
 	}
 
 	@Override
 	public List<Order> getByCookIdentity(String cookIdentity) {
-		// TODO Auto-generated method stub
-		return null;
+		return orderRepo.findByCook(cookIdentity);
 	}
 
 	@Override
 	public Double getTotalPriceForCook(String cookIdentity) {
-		// TODO Auto-generated method stub
-		return null;
+		return sumPrice(getByCookIdentity(cookIdentity));
+	}
+
+	private Double sumPrice(List<Order> orders) {
+		Double totalPrice = 0.0;
+		for (Order order : orders) {
+			totalPrice += order.getTotalPrice();
+		}
+		return totalPrice;
 	}
 
 	@Override
@@ -66,8 +51,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Integer getTotalDealsForCook(String cookIdentity) {
-		// TODO Auto-generated method stub
-		return null;
+		return getByCookIdentity(cookIdentity).size();
 	}
 
 	@Override
@@ -78,14 +62,12 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<Order> getByAdminIdentity(String adminIdentity) {
-		// TODO Auto-generated method stub
-		return null;
+		return orderRepo.findByAdministrator_Identity(adminIdentity);
 	}
 
 	@Override
 	public Double getTotalPriceForAdmin(String adminIdentity) {
-		// TODO Auto-generated method stub
-		return null;
+		return sumPrice(getByAdminIdentity(adminIdentity));
 	}
 
 	@Override
@@ -96,8 +78,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Integer getTotalDealsForAdmin(String adminIdentity) {
-		// TODO Auto-generated method stub
-		return null;
+		return getByAdminIdentity(adminIdentity).size();
 	}
 
 	@Override
@@ -108,14 +89,12 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<Order> getBySenderIdentity(String senderIdentity) {
-		// TODO Auto-generated method stub
-		return null;
+		return orderRepo.findBySender(senderIdentity);
 	}
 
 	@Override
 	public Double getTotalPriceForSender(String senderIdentity) {
-		// TODO Auto-generated method stub
-		return null;
+		return sumPrice(getBySenderIdentity(senderIdentity));
 	}
 
 	@Override
@@ -126,8 +105,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Integer getTotalDealsForSender(String senderIdentity) {
-		// TODO Auto-generated method stub
-		return null;
+		return getBySenderIdentity(senderIdentity).size();
 	}
 
 	@Override
@@ -138,14 +116,12 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<Order> getByCustomerIdentity(String customerIdentity) {
-		// TODO Auto-generated method stub
-		return null;
+		return orderRepo.findByCustomer_Identity(customerIdentity);
 	}
 
 	@Override
 	public Double getTotalPriceForCustomer(String customerIdentity) {
-		// TODO Auto-generated method stub
-		return null;
+		return sumPrice(getByCustomerIdentity(customerIdentity));
 	}
 
 	@Override
@@ -156,8 +132,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Integer getTotalDealsForCustomer(String customerIdentity) {
-		// TODO Auto-generated method stub
-		return null;
+		return getByCustomerIdentity(customerIdentity).size();
 	}
 
 	@Override
@@ -168,8 +143,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Double getTotalPrice() {
-		// TODO Auto-generated method stub
-		return null;
+		return sumPrice(getAll());
 	}
 
 	@Override
@@ -192,49 +166,22 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<Order> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return orderRepo.findAll();
 	}
 
 	@Override
 	public Order getByCustomerIdentityAndOrderTime(String identity, Date orderTime) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Order> getOrdersByCook(Cook cook) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Order> getOrdersByCook(String cookIdentity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Order> getOrdersBySender(Sender sender) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Order> getOrdersBySender(String senderIdentity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Order getOne(String id) {
-		return orderRepo.findOne(id);
+		return orderRepo.findByCustomer_IdentityAndOrderTime(identity, orderTime);
 	}
 
 	@Override
 	public void deleteAll() {
 		orderRepo.deleteAll();
+	}
 
+	@Override
+	public Order getOne(String orderId) {
+		return orderRepo.findOne(orderId);
 	}
 
 }

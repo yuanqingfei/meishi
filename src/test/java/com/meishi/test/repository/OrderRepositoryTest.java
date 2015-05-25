@@ -32,7 +32,7 @@ public class OrderRepositoryTest {
 
 	@Autowired
 	private OrderRepository orderRepo;
-	
+
 	@Autowired
 	private DishRepository dishRepo;
 
@@ -109,23 +109,13 @@ public class OrderRepositoryTest {
 	}
 
 	@Test
-	public void testFindOrdersByCook() {
-		Assert.assertNotNull(orderRepo.findOrdersByCook(cook));
-	}
-	
-	@Test
 	public void testFindOrdersByCookIdentity() {
-		Assert.assertNotNull(orderRepo.findOrdersByCook(cook.getIdentity()));
+		Assert.assertNotNull(orderRepo.findByCook(cook.getIdentity()));
 	}
-	
-	@Test
-	public void testFindOrdersBySender() {
-		Assert.assertNotNull(orderRepo.findOrdersBySender(sender));
-	}
-	
+
 	@Test
 	public void testFindOrdersBySenderIdentity() {
-		Assert.assertNotNull(orderRepo.findOrdersBySender(sender.getIdentity()));
+		Assert.assertNotNull(orderRepo.findBySender(sender.getIdentity()));
 	}
 
 }

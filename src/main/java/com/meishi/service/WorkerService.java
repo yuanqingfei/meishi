@@ -13,7 +13,7 @@ public interface WorkerService<T extends Worker> extends Crud<T> {
 	public List<T> getAll(WorkerStatus status);
 
 	public List<T> getAllAvailable();
-
+	
 	public T selectByStatusLocationRank(Point location, Distance distance);
 
 	public List<T> getRankHighest();

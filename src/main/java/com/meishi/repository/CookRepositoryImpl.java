@@ -23,11 +23,6 @@ public class CookRepositoryImpl implements CookRepositoryCustom {
 	private DishRepository dishRepo;
 
 	@Override
-	public List<Cook> findByDish(Dish dish) {
-		return findByDish(dish.getName());
-	}
-
-	@Override
 	public List<Cook> findByDish(String dishName) {
 		List<Cook> result = new ArrayList<Cook>();
 		Dish dish = dishRepo.findByName(dishName);

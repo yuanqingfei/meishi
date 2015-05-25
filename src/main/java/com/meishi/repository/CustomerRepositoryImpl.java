@@ -9,7 +9,6 @@ import org.springframework.data.geo.Point;
 
 import com.meishi.model.Constants;
 import com.meishi.model.Cook;
-import com.meishi.model.Customer;
 import com.meishi.model.Dish;
 
 public class CustomerRepositoryImpl implements CustomerRepositoryCustom {

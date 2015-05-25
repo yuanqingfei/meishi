@@ -4,17 +4,17 @@ import java.util.List;
 
 public interface Crud<T> {
 	
-	public abstract T upsert(T entity);
+	public T upsert(T entity);
 
-	public abstract void delete(String identity);
+	public void delete(String identity);
 
-	public abstract T get(String identity);
+	public T get(String identity);
 
-	public abstract Boolean isExisted(String identity);
+	public Boolean isExisted(String identity);
 	
-	public abstract Long count();
+	public Long count();
 	
-	public abstract List<T> getAll();
+	public List<T> getAll();
 	
 	public void deleteAll();
 

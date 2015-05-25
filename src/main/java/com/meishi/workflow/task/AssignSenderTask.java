@@ -7,15 +7,12 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
 import com.meishi.model.Constants;
 import com.meishi.model.Cook;
-import com.meishi.model.Order;
 import com.meishi.model.Sender;
-import com.meishi.service.OrderService;
 import com.meishi.service.SenderService;
 
 @Component

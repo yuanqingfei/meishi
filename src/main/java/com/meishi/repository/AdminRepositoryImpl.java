@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.meishi.model.Administrator;
-import com.meishi.model.Worker;
 
 public class AdminRepositoryImpl implements AdminRepositoryCustom {
 
@@ -30,11 +29,6 @@ public class AdminRepositoryImpl implements AdminRepositoryCustom {
 	 * workers will only store identity instead of the whole worker object
 	 * 
 	 */
-	@Override
-	public Administrator findByWorker(Worker worker) {
-		return findByWorker(worker.getIdentity());
-	}
-
 	@Override
 	public Administrator findByWorker(String workerIdentity) {
 		Query query = new Query(Criteria.where("directWorkerIds").all(workerIdentity));

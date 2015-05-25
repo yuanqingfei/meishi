@@ -35,7 +35,7 @@ public class AdministratorRepositoryTest {
 	@Before
 	public void setUp() {
 		adminRepo.deleteAll();
-		
+
 		admin = new Administrator();
 		admin.setIdentity("8888888");
 		double[] point = new double[] { 5, 6 };
@@ -80,11 +80,6 @@ public class AdministratorRepositoryTest {
 		Distance distance = new Distance(1);
 		List<Administrator> admins = adminRepo.findByLocationNear(point, distance);
 		Assert.assertEquals(1, admins.size());
-	}
-
-	@Test
-	public void testFindByWorker() {
-		Assert.assertNotNull(adminRepo.findByWorker(anotherAdmin));
 	}
 
 	@Test
