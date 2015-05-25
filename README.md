@@ -1,6 +1,4 @@
 # meishi
-meishi project try to offer an universal platform for food exchangers. It will be the bridge for commutal usage. 
-
 From technology aspect. 
 
 MongoDB based model design 
