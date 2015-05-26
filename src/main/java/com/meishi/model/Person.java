@@ -2,15 +2,16 @@ package com.meishi.model;
 
 import java.io.Serializable;
 
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
-import org.springframework.data.mongodb.core.index.Indexed;
 
+@CompoundIndex(name = "identity_name_index", def = "{'identity': 1, 'name': 2}")
 public class Person extends MongoDocument implements Serializable {
 	/**
 	 * 
 	 */
-	@Indexed
 	protected String identity;
+	protected String password;
 	
 	private static final long serialVersionUID = 1898355582020364397L;
 	protected String name;
@@ -25,6 +26,15 @@ public class Person extends MongoDocument implements Serializable {
 	@GeoSpatialIndexed
 	protected double[] location;
 	
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public String getStreetName() {
 		return streetName;
 	}

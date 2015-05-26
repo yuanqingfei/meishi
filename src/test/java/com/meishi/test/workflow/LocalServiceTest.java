@@ -15,10 +15,10 @@ import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.meishi.MeishiWorkFlowApplication;
+import com.meishi.MeishiApplication;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { MeishiWorkFlowApplication.class })
+@SpringApplicationConfiguration(classes = { MeishiApplication.class })
 // @WebAppConfiguration
 @IntegrationTest
 public class LocalServiceTest {

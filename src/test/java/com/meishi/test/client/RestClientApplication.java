@@ -22,15 +22,15 @@ public class RestClientApplication {
 				.useSystemProperties().build();
 		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactoryDigestAuth(
 				host, client);
-//		requestFactory.setConnectTimeout(30*1000);
-//		requestFactory.setReadTimeout(30*1000);
+		// requestFactory.setConnectTimeout(30*1000);
+		// requestFactory.setReadTimeout(30*1000);
 
 		return new RestTemplate(requestFactory);
 	}
 
 	private CredentialsProvider provider() {
 		CredentialsProvider provider = new BasicCredentialsProvider();
-		UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("client1", "password");
+		UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("123456789", "111");
 		provider.setCredentials(AuthScope.ANY, credentials);
 		return provider;
 	}

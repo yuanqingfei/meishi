@@ -4,16 +4,16 @@ import java.util.Map;
 
 public interface WorkflowService {
 
-	void createOrder(Map<String, Object> variables);
+	void createOrder(Map<String, Object> variables, String personIdentity);
 
-	void cookAcceptOrder();
+	void cookAcceptOrder(String personIdentity);
 
-	void cookDoneOrder();
+	void cookDoneOrder(String personIdentity);
 
-	void senderAcceptOrder();
+	void senderAcceptOrder(String personIdentity);
 
-	void senderDoneOrder();
+	void senderDoneOrder(String personIdentity);
 
-	void adminEsclateOrder();
+	void adminEsclateOrder(String personIdentity);
 
 }

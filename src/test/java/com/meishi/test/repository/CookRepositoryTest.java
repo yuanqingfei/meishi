@@ -1,8 +1,5 @@
 package com.meishi.test.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.meishi.MeishiRepositoryApplication;
 import com.meishi.model.Cook;
 import com.meishi.model.Dish;
 import com.meishi.model.Rank;
@@ -21,7 +17,7 @@ import com.meishi.repository.CookRepository;
 import com.meishi.repository.DishRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { MeishiRepositoryApplication.class })
+@SpringApplicationConfiguration(classes = { MeishiRepositoryApplicationForTest.class })
 public class CookRepositoryTest {
 
 	@Autowired
@@ -55,7 +51,7 @@ public class CookRepositoryTest {
 
 	@After
 	public void tearDown() {
-		cookRepo.delete(cook);
+		cookRepo.deleteAll();
 	}
 
 	@Test

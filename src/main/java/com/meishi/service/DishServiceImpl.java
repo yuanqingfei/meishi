@@ -2,7 +2,6 @@ package com.meishi.service;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,8 +10,6 @@ import com.meishi.repository.DishRepository;
 
 @Component
 public class DishServiceImpl implements DishService {
-
-	private Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired
 	private DishRepository dishRepo;
@@ -25,8 +22,6 @@ public class DishServiceImpl implements DishService {
 	@Override
 	public void delete(String dishName) {
 		dishRepo.delete(dishRepo.findByName(dishName));
-		;
-
 	}
 
 	@Override

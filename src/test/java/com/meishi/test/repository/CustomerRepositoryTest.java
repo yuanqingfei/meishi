@@ -1,6 +1,5 @@
 package com.meishi.test.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -13,7 +12,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.data.geo.Point;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.meishi.MeishiRepositoryApplication;
 import com.meishi.model.Cook;
 import com.meishi.model.Customer;
 import com.meishi.model.Dish;
@@ -22,7 +20,7 @@ import com.meishi.repository.CustomerRepository;
 import com.meishi.repository.DishRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { MeishiRepositoryApplication.class })
+@SpringApplicationConfiguration(classes = { MeishiRepositoryApplicationForTest.class })
 public class CustomerRepositoryTest {
 
 	@Autowired
@@ -77,9 +75,8 @@ public class CustomerRepositoryTest {
 
 	@After
 	public void tearDown() {
-		cookRepo.delete(cook);
-		cookRepo.delete(cook2);
-		customerRepo.delete(customer);
+		cookRepo.deleteAll();
+		customerRepo.deleteAll();
 	}
 
 	@Test

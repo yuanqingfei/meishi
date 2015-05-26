@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.meishi.MeishiRepositoryApplication;
 import com.meishi.model.Administrator;
 import com.meishi.model.Cook;
 import com.meishi.model.Customer;
@@ -25,7 +24,7 @@ import com.meishi.repository.DishRepository;
 import com.meishi.repository.OrderRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { MeishiRepositoryApplication.class })
+@SpringApplicationConfiguration(classes = { MeishiRepositoryApplicationForTest.class })
 public class OrderRepositoryTest {
 
 	private Logger logger = Logger.getLogger(this.getClass());
@@ -89,7 +88,7 @@ public class OrderRepositoryTest {
 
 	@After
 	public void tearDown() {
-		orderRepo.delete(orderRepo.findByAdministrator_Identity(admin.getIdentity()).get(0).getId());
+		orderRepo.deleteAll();
 	}
 
 	@Test

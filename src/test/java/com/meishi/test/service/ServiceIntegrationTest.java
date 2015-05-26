@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.meishi.MeishiServiceApplication;
+import com.meishi.MeishiApplication;
 import com.meishi.model.Administrator;
 import com.meishi.model.Cook;
 import com.meishi.model.Customer;
@@ -21,7 +21,7 @@ import com.meishi.service.DishService;
 import com.meishi.service.SenderService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { MeishiServiceApplication.class })
+@SpringApplicationConfiguration(classes = { MeishiApplication.class })
 public class ServiceIntegrationTest {
 
 	@Autowired
@@ -53,20 +53,24 @@ public class ServiceIntegrationTest {
 		Administrator admin = new Administrator();
 		admin.setName("admin");
 		admin.setIdentity("123456");
+		admin.setPassword("111");
 		admin.setLocation(new double[]{5, 5});
 		
 		Cook cook = new Cook();
 		cook.setName("cook");
 		cook.setIdentity("1234567");
+		cook.setPassword("111");
 		cook.setLocation(new double[]{5, 4});
 		
 		Sender sender = new Sender();
 		sender.setName("sender");
 		sender.setIdentity("12345678");
+		sender.setPassword("111");
 		sender.setLocation(new double[]{5, 4});
 		
 		Customer customer = new Customer();
 		customer.setName("customer");
+		customer.setPassword("111");
 		customer.setLocation(new double[]{5, 5});
 		customer.setIdentity("123456789");;
 		

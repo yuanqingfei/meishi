@@ -9,14 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.meishi.MeishiServiceApplication;
+import com.meishi.MeishiApplication;
 import com.meishi.model.Administrator;
 import com.meishi.model.Rank;
 import com.meishi.model.WorkerStatus;
 import com.meishi.service.AdministratorService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { MeishiServiceApplication.class })
+@SpringApplicationConfiguration(classes = { MeishiApplication.class })
 public class AdministratorServiceTest {
 
 	@Autowired
@@ -35,26 +35,26 @@ public class AdministratorServiceTest {
 
 	@After
 	public void tearDown() {
-		adminService.delete(admin.getIdentity());
+		adminService.deleteAll();
 	}
 
 	@Test
 	public void testGetAllByStatus() {
 		Assert.assertEquals(0, adminService.getAll(WorkerStatus.BUSY).size());
 	}
-	
+
 	@Test
-	public void testGetAllAvailable(){
+	public void testGetAllAvailable() {
 		Assert.assertEquals(1, adminService.getAllAvailable().size());
 	}
-	
+
 	@Test
-	public void testGetRankHighest(){
+	public void testGetRankHighest() {
 		Assert.assertEquals(1, adminService.getRankHighest().size());
 	}
-	
+
 	@Test
-	public void testDisable(){
+	public void testDisable() {
 		adminService.disable("8888888");
 		Assert.assertEquals(0, adminService.getAllAvailable().size());
 	}

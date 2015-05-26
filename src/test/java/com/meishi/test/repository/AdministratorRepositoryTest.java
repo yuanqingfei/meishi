@@ -14,7 +14,6 @@ import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.meishi.MeishiRepositoryApplication;
 import com.meishi.model.Administrator;
 import com.meishi.model.Rank;
 import com.meishi.model.Worker;
@@ -22,7 +21,7 @@ import com.meishi.model.WorkerStatus;
 import com.meishi.repository.AdminRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { MeishiRepositoryApplication.class })
+@SpringApplicationConfiguration(classes = { MeishiRepositoryApplicationForTest.class })
 public class AdministratorRepositoryTest {
 
 	@Autowired
@@ -54,8 +53,7 @@ public class AdministratorRepositoryTest {
 
 	@After
 	public void tearDown() {
-		adminRepo.delete(admin);
-		adminRepo.delete(anotherAdmin);
+		adminRepo.deleteAll();
 	}
 
 	@Test

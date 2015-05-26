@@ -1,7 +1,6 @@
 package com.meishi.rest;
 
-import java.util.HashMap;
-import java.util.List;
+import java.security.Principal;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -26,43 +25,38 @@ public class MeishiRestService {
 
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/meishi/createOrder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void createOrder(@RequestBody Map<String, Object> data) {
-		meishiService.createOrder(data);
+	public void createOrder(@RequestBody Map<String, Object> data, Principal principal) {
+		meishiService.createOrder(data, principal.getName());
 	}
-
-//	@RequestMapping(value = "/meishi/getOrderProcessIds", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//	public List<String> getOrderProcessIds() {
-//		return meishiService.getOrderProcessIds();
-//	}
 
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/meishi/cookAcceptOrder", method = RequestMethod.POST)
-	public void cookAcceptOrder() {
-		meishiService.cookAcceptOrder();
+	public void cookAcceptOrder(Principal principal) {
+		meishiService.cookAcceptOrder(principal.getName());
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/meishi/cookDoneOrder", method = RequestMethod.POST)
-	public void cookDoneOrder() {
-		meishiService.cookDoneOrder();
+	public void cookDoneOrder(Principal principal) {
+		meishiService.cookDoneOrder(principal.getName());
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/meishi/senderAcceptOrder", method = RequestMethod.POST)
-	public void senderAcceptOrder() {
-		meishiService.senderAcceptOrder();
+	public void senderAcceptOrder(Principal principal) {
+		meishiService.senderAcceptOrder(principal.getName());
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/meishi/senderDoneOrder", method = RequestMethod.POST)
-	public void senderDoneOrder() {
-		meishiService.senderDoneOrder();
+	public void senderDoneOrder(Principal principal) {
+		meishiService.senderDoneOrder(principal.getName());
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/meishi/adminEsclateOrder", method = RequestMethod.POST)
-	public void adminEsclateOrder() {
-		meishiService.adminEsclateOrder();
+	public void adminEsclateOrder(Principal principal) {
+		meishiService.adminEsclateOrder(principal.getName());
 	}
 
 }

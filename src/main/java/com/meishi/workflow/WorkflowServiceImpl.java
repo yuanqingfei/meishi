@@ -43,22 +43,17 @@ public class WorkflowServiceImpl implements WorkflowService {
 
 	private static final String PROCESS_ID = "orderProcess";
 
-	private static final String CLIENT_NAME = "client1";
-	private static final String COOK_NAME = "cook1";
-	private static final String SENDER_NAME = "sender1";
-	private static final String ADMIN_NAME = "admin1";
-
 	private void startProcess() {
 		String id = runtimeService.startProcessInstanceByKey(PROCESS_ID).getId();
 		logger.info("instance id: " + id);
 	}
-	
+
 	@Transactional
-	public List<String> getTasks(String userName){
+	public List<String> getTasks(String userName) {
 		List<Task> tasks = taskService.createTaskQuery().taskCandidateUser(userName).list();
-		
+
 		List<String> result = new ArrayList<String>();
-		for(Task task : tasks){
+		for (Task task : tasks) {
 			result.add(task.getId() + "  " + task.getName());
 		}
 		return result;
@@ -66,9 +61,9 @@ public class WorkflowServiceImpl implements WorkflowService {
 
 	@Override
 	@Transactional
-	public void createOrder(Map<String, Object> variables) {
+	public void createOrder(Map<String, Object> variables, String personIdentity) {
 		startProcess();
-		String taskId = claimTask(CLIENT_CREATE_TASK_ID, CLIENT_NAME);
+		String taskId = claimTask(CLIENT_CREATE_TASK_ID, personIdentity);
 		taskService.complete(taskId, variables);
 	}
 
@@ -84,32 +79,32 @@ public class WorkflowServiceImpl implements WorkflowService {
 
 	@Override
 	@Transactional
-	public void cookAcceptOrder() {
-		completeTask(COOK_ACCEPT_TASK_ID, COOK_NAME);
+	public void cookAcceptOrder(String personIdentity) {
+		completeTask(COOK_ACCEPT_TASK_ID, personIdentity);
 	}
 
 	@Override
 	@Transactional
-	public void cookDoneOrder() {
-		completeTask(COOK_DONE_TASK_ID, COOK_NAME);
+	public void cookDoneOrder(String personIdentity) {
+		completeTask(COOK_DONE_TASK_ID, personIdentity);
 	}
 
 	@Override
 	@Transactional
-	public void senderAcceptOrder() {
-		completeTask(SENDER_ACCEPT_TASK_ID, SENDER_NAME);
+	public void senderAcceptOrder(String personIdentity) {
+		completeTask(SENDER_ACCEPT_TASK_ID, personIdentity);
 	}
 
 	@Override
 	@Transactional
-	public void senderDoneOrder() {
-		completeTask(SENDER_DONE_TASK_ID, SENDER_NAME);
+	public void senderDoneOrder(String personIdentity) {
+		completeTask(SENDER_DONE_TASK_ID, personIdentity);
 	}
 
 	@Override
 	@Transactional
-	public void adminEsclateOrder() {
-		completeTask(ADMIN_ESCLATE_TASK_ID, ADMIN_NAME);
+	public void adminEsclateOrder(String personIdentity) {
+		completeTask(ADMIN_ESCLATE_TASK_ID, personIdentity);
 	}
 
 	private void completeTask(String taskDefId, String userId) {
