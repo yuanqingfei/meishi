@@ -1,4 +1,4 @@
-package com.meishi.test.service;
+package com.meishi.test.rest;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -79,7 +79,7 @@ public class ServiceIntegrationTest {
 		dish1.setPrice(12.5);
 		
 		Dish dish2 = new Dish();
-		dish2.setName("Dish2");
+		dish2.setName("À±×Ó¼¦");
 		dish2.setPrice(21.3);
 
 		String dishId1 = dishService.upsert(dish1).getId();

@@ -45,7 +45,6 @@ public class AssignAdminTask implements JavaDelegate {
 		exec.setVariable("admin", admin);
 		
 		adminService.occupy(admin.getIdentity());
-		
 		logger.info("assign admin to " + admin);
 	}
 

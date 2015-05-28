@@ -1,4 +1,4 @@
-package com.meishi.test.client;
+package com.meishi.test.rest;
 
 import java.net.URI;
 

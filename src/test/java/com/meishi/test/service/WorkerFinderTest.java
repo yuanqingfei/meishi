@@ -59,12 +59,12 @@ public class WorkerFinderTest {
 	@Test
 	public void testFindWorker() {
 		Administrator result = workerFinder.findWorker(new Point(3, 3));
-		Assert.assertEquals("admin1", result.getName());
+		Assert.assertEquals("admin3", result.getName());
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void testFindWorkerFailed() {
-		workerFinder.findWorker(new Point(3, 3), new Distance(1.0));
+		workerFinder.findWorker(new Point(3, 3), new Distance(0.9));
 	}
 	
 	@Test

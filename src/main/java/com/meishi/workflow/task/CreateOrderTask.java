@@ -41,6 +41,8 @@ public class CreateOrderTask implements JavaDelegate {
 		Administrator admin=(Administrator)exec.getVariable("admin");
 		String meishiList=(String)exec.getVariable("meishiList");
 		String clientId = (String)exec.getVariable("clientId");
+		
+		logger.info("############ chinese: " + meishiList);
 
 		Order order = new Order();
 		order.setAdministrator(admin);

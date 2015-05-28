@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.meishi.model.Dish;
 import com.meishi.repository.DishRepository;
+import com.meishi.test.repository.app.MeishiRepositoryApplicationForTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { MeishiRepositoryApplicationForTest.class })

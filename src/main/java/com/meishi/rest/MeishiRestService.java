@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +23,7 @@ public class MeishiRestService {
 	private WorkflowService meishiService;
 
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/meishi/createOrder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/meishi/createOrder", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
 	public void createOrder(@RequestBody Map<String, Object> data, Principal principal) {
 		meishiService.createOrder(data, principal.getName());
 	}

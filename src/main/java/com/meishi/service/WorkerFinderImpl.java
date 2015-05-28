@@ -48,7 +48,7 @@ public class WorkerFinderImpl<T extends Worker> implements WorkerFinder<T> {
 		List<T> locationSet = workerRepo.findByLocationNear(location, distance);
 		List<T> joinSet = join(statusSet, locationSet);
 		if (joinSet == null || joinSet.size() == 0) {
-			throw new RuntimeException("Can not find correct admin based on: " + location + " " + distance);
+			throw new RuntimeException("Can not find correct worker based on: " + location + " " + distance);
 		}
 
 		Collections.sort(joinSet);

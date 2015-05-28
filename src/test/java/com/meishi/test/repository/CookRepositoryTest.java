@@ -15,6 +15,7 @@ import com.meishi.model.Rank;
 import com.meishi.model.WorkerStatus;
 import com.meishi.repository.CookRepository;
 import com.meishi.repository.DishRepository;
+import com.meishi.test.repository.app.MeishiRepositoryApplicationForTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { MeishiRepositoryApplicationForTest.class })

@@ -4,7 +4,7 @@
     <startEvent id="startevent1" name="Start"></startEvent>
     <userTask id="clientDropOrder" name="Client Creat an Order" activiti:candidateGroups="client">
       <extensionElements>
-        <activiti:formProperty id="meishiList" name="Meishi Ordered" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="meishiList" name="Meishi Ordered" type="string" required="true" ></activiti:formProperty>
         <activiti:formProperty id="clientLocation" name="Target Location Details" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="clientId" name="Customer Personal Id" type="string" required="true"></activiti:formProperty>
       </extensionElements>

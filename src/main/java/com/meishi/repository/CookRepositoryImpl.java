@@ -26,6 +26,11 @@ public class CookRepositoryImpl implements CookRepositoryCustom {
 	public List<Cook> findByDish(String dishName) {
 		List<Cook> result = new ArrayList<Cook>();
 		Dish dish = dishRepo.findByName(dishName);
+		if(dish == null){
+			String errorMessage = "We can not find this dish: " + dishName;
+			logger.error(errorMessage);
+			throw new RuntimeException(errorMessage);
+		}
 		Query query = new Query(Criteria.where("dishIds").all(dish.getId()));
 		result.addAll(operations.find(query, Cook.class));
 

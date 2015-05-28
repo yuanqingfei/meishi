@@ -22,6 +22,7 @@ import com.meishi.model.Order;
 import com.meishi.model.Sender;
 import com.meishi.repository.DishRepository;
 import com.meishi.repository.OrderRepository;
+import com.meishi.test.repository.app.MeishiRepositoryApplicationForTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { MeishiRepositoryApplicationForTest.class })

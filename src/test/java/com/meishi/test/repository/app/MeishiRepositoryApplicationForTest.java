@@ -1,4 +1,4 @@
-package com.meishi.test.repository;
+package com.meishi.test.repository.app;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.authentication.UserCredentials;

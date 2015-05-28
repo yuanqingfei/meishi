@@ -18,6 +18,7 @@ import com.meishi.model.Dish;
 import com.meishi.repository.CookRepository;
 import com.meishi.repository.CustomerRepository;
 import com.meishi.repository.DishRepository;
+import com.meishi.test.repository.app.MeishiRepositoryApplicationForTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { MeishiRepositoryApplicationForTest.class })
