@@ -1,7 +1,6 @@
 package com.meishi.model;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;

@@ -20,6 +20,8 @@ import org.springframework.web.client.RestTemplate;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { RestClientApplication.class })
 public class RemoteOrderRestServiceTest {
+	
+	private static Integer waitTime = 10000;
 
 	@Autowired
 	@Qualifier("customerClient")
@@ -64,13 +66,71 @@ public class RemoteOrderRestServiceTest {
 	}
 
 	@Test
-	public void orderChain() {
-//		testCreateOrder();
+	public void testAdminEsclationOrderFalseCook() {
+		String request = "{\"refund\" : false, \"restart\" : \"C\"}";
+		postRequestOK(adminClient, "http://localhost:8080/meishi/adminEsclateOrder", request);
+	}
+	
+	@Test
+	public void testAdminEsclationOrderFalseSender() {
+		String request = "{\"refund\" : false, \"restart\" : \"S\"}";
+		postRequestOK(adminClient, "http://localhost:8080/meishi/adminEsclateOrder", request);
+	}
+	
+	@Test
+	public void testAdminEsclationOrderTrue() {
+		String request = "{\"refund\" : true}";
+		postRequestOK(adminClient, "http://localhost:8080/meishi/adminEsclateOrder", request);
+	}
+
+	@Test
+	public void orderSuccessChain() {
+		testCreateOrder();
 		testCookAcceptOrder();
 		testCookDoneOrder();
 		testSenderAcceptOrder();
 		testSenderDoneOrder();
 	}
+	
+	@Test
+	public void orderCookFailureChain() throws InterruptedException {
+		testCreateOrder();
+		Thread.sleep(waitTime);
+		testAdminEsclationOrderTrue();
+	}
+	
+	@Test
+	public void orderSenderFailureChain() throws InterruptedException {
+		testCreateOrder();
+		testCookAcceptOrder();
+		testCookDoneOrder();
+		Thread.sleep(waitTime);
+		testAdminEsclationOrderTrue();
+	}
+	
+	@Test
+	public void orderReCookSuccessChain() throws InterruptedException {
+		testCreateOrder();
+		testCookAcceptOrder();
+		Thread.sleep(waitTime);
+		testAdminEsclationOrderFalseCook();
+		testCookAcceptOrder();
+		testCookDoneOrder();
+		testSenderAcceptOrder();
+		testSenderDoneOrder();
+	}
+	
+	@Test
+	public void orderReSenderSuccessChain() throws InterruptedException {
+		testCreateOrder();
+		testCookAcceptOrder();
+		testCookDoneOrder();
+		Thread.sleep(waitTime);
+		testAdminEsclationOrderFalseSender();
+		testSenderAcceptOrder();
+		testSenderDoneOrder();
+	}
+	
 
 	private void postRequestOK(RestTemplate restClient, String url, String requestString) {
 		HttpHeaders headers = new HttpHeaders();

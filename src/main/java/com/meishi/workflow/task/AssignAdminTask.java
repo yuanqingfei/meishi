@@ -4,16 +4,14 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
 import com.meishi.model.Administrator;
-import com.meishi.model.Constants;
 import com.meishi.model.Customer;
-import com.meishi.model.WorkerStatus;
 import com.meishi.service.AdministratorService;
 import com.meishi.service.CustomerService;
+import com.meishi.util.Constants;
 
 @Component
 public class AssignAdminTask implements JavaDelegate {
@@ -28,23 +26,22 @@ public class AssignAdminTask implements JavaDelegate {
 
 	@Override
 	public void execute(DelegateExecution exec) throws Exception {
-		String clientLocation = (String) exec.getVariable("clientLocation");
-		String clientId = (String) exec.getVariable("clientId");
+		String clientLocation = (String) exec.getVariable(Constants.CLIENT_LOCATION_VARIABLE);
+		String clientId = (String) exec.getVariable(Constants.CLIENT_ID_VARIABLE);
 		double[] location = new double[] {};
 		if (clientLocation == null || clientLocation.length() == 0) {
 			Customer customer = customerService.get(clientId);
 			location = customer.getLocation();
 		} else {
-			String[] address = clientLocation.split(",");
+			String[] address = clientLocation.split(Constants.CLIENT_LOCATION_SEPARATER_VARIABLE);
 			location[0] = Double.valueOf(address[0]);
 			location[1] = Double.valueOf(address[1]);
 		}
 		Point point = new Point(location[0], location[1]);
-		
-		Administrator admin = adminService.selectByStatusLocationRank(point, Constants.DEFAULT_DISTANCE);
-		exec.setVariable("admin", admin);
-		
-		adminService.occupy(admin.getIdentity());
+
+		Administrator admin = adminService.findByLocation(point, Constants.ADMIN_DISTANCE);
+		exec.setVariable(Constants.ADMIN_VARIABLE, admin);
+
 		logger.info("assign admin to " + admin);
 	}
 

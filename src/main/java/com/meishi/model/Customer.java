@@ -17,7 +17,21 @@ public class Customer extends Person implements Serializable {
 	private String registerId;
 
 	private List<String> recent5DishId = new ArrayList<String>();
-	
+
+	private Double accountBalance = 0.0;
+
+	public Double getAccountBalance() {
+		return accountBalance;
+	}
+
+	public void setAccountBalance(Double accountBalance) {
+		this.accountBalance = accountBalance;
+	}
+
+	public void setRecent5DishId(List<String> recent5DishId) {
+		this.recent5DishId = recent5DishId;
+	}
+
 	public List<String> getRecent5DishId() {
 		return recent5DishId;
 	}

@@ -10,7 +10,6 @@ import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
 import com.meishi.model.Administrator;
-import com.meishi.model.Rank;
 import com.meishi.model.WorkerStatus;
 import com.meishi.repository.AdminRepository;
 
@@ -50,39 +49,10 @@ public class AdministratorServiceImpl implements AdministratorService {
 	}
 
 	@Override
-	public List<Administrator> getAll(WorkerStatus status) {
-		return adminRepo.findByStatus(status);
-	}
-
-	@Override
-	public List<Administrator> getAllAvailable() {
-		return adminRepo.findByStatus(WorkerStatus.READY);
-	}
-
-	@Override
-	public List<Administrator> getRankHighest() {
-		return adminRepo.findByRank(Rank.Rank5);
-	}
-
-	@Override
 	public void disable(String identity) {
 		Administrator admin = adminRepo.findByIdentity(identity);
 		admin.setStatus(WorkerStatus.DISABLE);
 		adminRepo.save(admin);
-	}
-
-	@Override
-	public void occupy(String identity) {
-		Administrator entity = adminRepo.findByIdentity(identity);
-		entity.setStatus(WorkerStatus.BUSY);
-		adminRepo.save(entity);
-	}
-
-	@Override
-	public void release(String identity) {
-		Administrator entity = adminRepo.findByIdentity(identity);
-		entity.setStatus(WorkerStatus.READY);
-		adminRepo.save(entity);
 	}
 
 	@Override
@@ -96,11 +66,6 @@ public class AdministratorServiceImpl implements AdministratorService {
 	}
 
 	@Override
-	public Administrator selectByStatusLocationRank(Point location, Distance distance) {
-		return workerFinder.findWorker(location, distance);
-	}
-
-	@Override
 	public Administrator getByWorker(String identity) {
 		return adminRepo.findByWorker(identity);
 	}
@@ -108,6 +73,15 @@ public class AdministratorServiceImpl implements AdministratorService {
 	@Override
 	public void deleteAll() {
 		adminRepo.deleteAll();
+	}
+
+	@Override
+	public Administrator findByLocation(Point location, Distance distance) {
+		List<Administrator> admins = adminRepo.findByLocationNear(location, distance);
+		if (admins == null || admins.size() == 0) {
+			throw new RuntimeException("there is no admin around " + location + " within " + distance);
+		}
+		return admins.get(0);
 	}
 
 }

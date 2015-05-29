@@ -1,9 +1,7 @@
 package com.meishi.test.service;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -36,27 +34,6 @@ public class AdministratorServiceTest {
 	@After
 	public void tearDown() {
 		adminService.deleteAll();
-	}
-
-	@Test
-	public void testGetAllByStatus() {
-		Assert.assertEquals(0, adminService.getAll(WorkerStatus.BUSY).size());
-	}
-
-	@Test
-	public void testGetAllAvailable() {
-		Assert.assertEquals(1, adminService.getAllAvailable().size());
-	}
-
-	@Test
-	public void testGetRankHighest() {
-		Assert.assertEquals(1, adminService.getRankHighest().size());
-	}
-
-	@Test
-	public void testDisable() {
-		adminService.disable("8888888");
-		Assert.assertEquals(0, adminService.getAllAvailable().size());
 	}
 
 }

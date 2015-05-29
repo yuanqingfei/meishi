@@ -53,9 +53,9 @@ public class MeishiRestService {
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/meishi/adminEsclateOrder", method = RequestMethod.POST)
-	public void adminEsclateOrder(Principal principal) {
-		meishiService.adminEsclateOrder(principal.getName());
+	@RequestMapping(value = "/meishi/adminEsclateOrder", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
+	public void adminEsclateOrder(@RequestBody Map<String, Object> data, Principal principal) {
+		meishiService.adminEsclateOrder(data, principal.getName());
 	}
 
 }

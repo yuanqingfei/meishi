@@ -8,10 +8,10 @@ import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
 import org.springframework.util.Assert;
 
-import com.meishi.model.Constants;
 import com.meishi.model.Worker;
 import com.meishi.model.WorkerStatus;
 import com.meishi.repository.WorkerRepository;
+import com.meishi.util.Constants;
 
 public class WorkerFinderImpl<T extends Worker> implements WorkerFinder<T> {
 

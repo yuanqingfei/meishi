@@ -14,6 +14,6 @@ public interface WorkflowService {
 
 	void senderDoneOrder(String personIdentity);
 
-	void adminEsclateOrder(String personIdentity);
+	void adminEsclateOrder(Map<String, Object> variables, String personIdentity);
 
 }

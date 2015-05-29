@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
-import com.meishi.model.Constants;
 import com.meishi.model.Cook;
 import com.meishi.model.Sender;
 import com.meishi.service.SenderService;
+import com.meishi.util.Constants;
 
 @Component
 public class AssignSenderTask implements JavaDelegate {
@@ -25,7 +25,16 @@ public class AssignSenderTask implements JavaDelegate {
 
 	@Override
 	public void execute(DelegateExecution exec) throws Exception {
-		List<Cook> cooks = (List<Cook>) exec.getVariable("cooks");
+		
+		// for re-sender
+		List<Sender> previousSenders = (List<Sender>)exec.getVariable(Constants.SENDER_VARIABLE);
+		if(previousSenders != null && previousSenders.size() > 0){
+			for(Sender cook : previousSenders){
+				senderService.release(cook.getIdentity());
+			}
+		}
+		
+		List<Cook> cooks = (List<Cook>) exec.getVariable(Constants.COOK_VARIABLE);
 
 		List<Sender> senders = new ArrayList<Sender>();
 		for (Cook cook : cooks) {
@@ -35,8 +44,7 @@ public class AssignSenderTask implements JavaDelegate {
 			senders.add(sender);
 		}
 
-		exec.setVariable("senders", senders);
-		logger.info("###### assign sender to " + senders);
+		exec.setVariable(Constants.SENDER_VARIABLE, senders);
 	}
 
 }

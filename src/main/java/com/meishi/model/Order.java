@@ -18,6 +18,8 @@ public class Order extends MongoDocument implements Serializable {
 
 	private Date expectTime;
 
+	private Date completeTime;
+
 	private Administrator administrator;
 
 	private List<Cook> cooks;
@@ -33,10 +35,18 @@ public class Order extends MongoDocument implements Serializable {
 	private Double totalPrice;
 
 	private String deliveryAddress;
-	
+
 	private Double[] location;
 
 	private List<OrderStatusEntry> statuses;
+
+	public Date getCompleteTime() {
+		return completeTime;
+	}
+
+	public void setCompleteTime(Date completeTime) {
+		this.completeTime = completeTime;
+	}
 
 	public String getDeliveryAddress() {
 		return deliveryAddress;
@@ -137,9 +147,8 @@ public class Order extends MongoDocument implements Serializable {
 	@Override
 	public String toString() {
 		return "Order [orderTime=" + orderTime + ", expectTime=" + expectTime + ", admin=" + administrator
-				+ ", orderBy=" + customer  + ", foods=" + foods
-				+ ", addtionalRequirement=" + addtionalRequirement + ", totalPrice=" + totalPrice + ", location="
-				+ deliveryAddress + ", statuses=" + statuses + "]";
+				+ ", orderBy=" + customer + ", foods=" + foods + ", addtionalRequirement=" + addtionalRequirement
+				+ ", totalPrice=" + totalPrice + ", location=" + deliveryAddress + ", statuses=" + statuses + "]";
 	}
 
 }

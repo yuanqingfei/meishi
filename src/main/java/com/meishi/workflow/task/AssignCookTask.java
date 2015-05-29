@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.meishi.model.Cook;
 import com.meishi.service.CookService;
+import com.meishi.util.Constants;
 
 @Component
 public class AssignCookTask implements JavaDelegate {
@@ -24,8 +25,16 @@ public class AssignCookTask implements JavaDelegate {
 
 	@Override
 	public void execute(DelegateExecution exec) throws Exception {
+		
+		// for re-cooking
+		List<Cook> previousCooks = (List<Cook>)exec.getVariable(Constants.COOK_VARIABLE);
+		if(previousCooks != null && previousCooks.size() > 0){
+			for(Cook cook : previousCooks){
+				cookService.release(cook.getIdentity());
+			}
+		}
 
-		String[] meishiNames = ((String[]) exec.getVariable("meishiNames"));
+		String[] meishiNames = ((String[]) exec.getVariable(Constants.FOOD_ARRAY_VARIABLE));
 
 		// use set to filter duplicate cook
 		Set<Cook> resultCooks = new HashSet<Cook>();
@@ -34,9 +43,7 @@ public class AssignCookTask implements JavaDelegate {
 			resultCooks.addAll(cooks);
 		}
 
-		exec.setVariable("cooks", new ArrayList<Cook>(resultCooks));
-		logger.info("###### assign cook to " + resultCooks);
-
+		exec.setVariable(Constants.COOK_VARIABLE, new ArrayList<Cook>(resultCooks));
 	}
 
 }

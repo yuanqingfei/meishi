@@ -18,6 +18,7 @@ import com.meishi.service.AdministratorService;
 import com.meishi.service.CookService;
 import com.meishi.service.CustomerService;
 import com.meishi.service.DishService;
+import com.meishi.service.MoneyService;
 import com.meishi.service.SenderService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -38,6 +39,9 @@ public class ServiceIntegrationTest {
 
 	@Autowired
 	private SenderService senderService;
+	
+	@Autowired
+	private MoneyService moneyService;
 
 	/**
 	 * try to setup all Master Data(static data) for future test
@@ -95,6 +99,7 @@ public class ServiceIntegrationTest {
 		adminService.upsert(admin);
 		
 		customerService.upsert(customer);
+		moneyService.deposit("123456789", 1000000.0);
 	}
 
 	@Test
