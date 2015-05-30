@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.meishi.model.Person;
+import com.meishi.repository.AdminRepository;
+import com.meishi.repository.CookRepository;
+import com.meishi.repository.CustomerRepository;
+import com.meishi.repository.SenderRepository;
 
 @Component
 public class UserAndGroupInitializer {
@@ -19,16 +23,16 @@ public class UserAndGroupInitializer {
 	private IdentityService identityService;
 
 	@Autowired
-	private AdministratorService adminService;
+	private AdminRepository adminService;
 
 	@Autowired
-	private CookService cookService;
+	private CookRepository cookService;
 
 	@Autowired
-	private SenderService senderService;
+	private SenderRepository senderService;
 
 	@Autowired
-	private CustomerService customerService;
+	private CustomerRepository customerService;
 
 	private static final String ADMIN_GROUP_ID = "admin";
 	private static final String COOK_GROUP_ID = "cook";
@@ -37,10 +41,10 @@ public class UserAndGroupInitializer {
 
 	@PostConstruct
 	public void setUp() {
-		addToIdentity(adminService.getAll(), createGroup(ADMIN_GROUP_ID));
-		addToIdentity(customerService.getAll(), createGroup(CLIENT_GROUP_ID));
-		addToIdentity(cookService.getAll(), createGroup(COOK_GROUP_ID));
-		addToIdentity(senderService.getAll(), createGroup(SENDER_GROUP_ID));
+		addToIdentity(adminService.findAll(), createGroup(ADMIN_GROUP_ID));
+		addToIdentity(customerService.findAll(), createGroup(CLIENT_GROUP_ID));
+		addToIdentity(cookService.findAll(), createGroup(COOK_GROUP_ID));
+		addToIdentity(senderService.findAll(), createGroup(SENDER_GROUP_ID));
 	}
 
 	private void addToIdentity(List<? extends Person> persons, Group group) {

@@ -23,37 +23,37 @@ public class MeishiRestService {
 	private WorkflowService meishiService;
 
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/meishi/createOrder", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
+	@RequestMapping(value = "/action/createOrder", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
 	public void createOrder(@RequestBody Map<String, Object> data, Principal principal) {
 		meishiService.createOrder(data, principal.getName());
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/meishi/cookAcceptOrder", method = RequestMethod.POST)
+	@RequestMapping(value = "/action/cookAcceptOrder", method = RequestMethod.POST)
 	public void cookAcceptOrder(Principal principal) {
 		meishiService.cookAcceptOrder(principal.getName());
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/meishi/cookDoneOrder", method = RequestMethod.POST)
+	@RequestMapping(value = "/action/cookDoneOrder", method = RequestMethod.POST)
 	public void cookDoneOrder(Principal principal) {
 		meishiService.cookDoneOrder(principal.getName());
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/meishi/senderAcceptOrder", method = RequestMethod.POST)
+	@RequestMapping(value = "/action/senderAcceptOrder", method = RequestMethod.POST)
 	public void senderAcceptOrder(Principal principal) {
 		meishiService.senderAcceptOrder(principal.getName());
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/meishi/senderDoneOrder", method = RequestMethod.POST)
+	@RequestMapping(value = "/action/senderDoneOrder", method = RequestMethod.POST)
 	public void senderDoneOrder(Principal principal) {
 		meishiService.senderDoneOrder(principal.getName());
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/meishi/adminEsclateOrder", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
+	@RequestMapping(value = "/action/adminEsclateOrder", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
 	public void adminEsclateOrder(@RequestBody Map<String, Object> data, Principal principal) {
 		meishiService.adminEsclateOrder(data, principal.getName());
 	}

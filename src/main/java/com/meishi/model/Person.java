@@ -5,12 +5,16 @@ import java.io.Serializable;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @CompoundIndex(name = "identity_name_index", def = "{'identity': 1, 'name': 2}")
 public class Person extends MongoDocument implements Serializable {
 	/**
 	 * 
 	 */
 	protected String identity;
+	
+	@JsonIgnore
 	protected String password;
 	
 	private static final long serialVersionUID = 1898355582020364397L;
