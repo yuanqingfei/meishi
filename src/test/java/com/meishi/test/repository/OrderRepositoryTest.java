@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.meishi.MeishiApplication.RepositoryApplication;
 import com.meishi.model.Administrator;
 import com.meishi.model.Cook;
 import com.meishi.model.Customer;
@@ -22,10 +23,9 @@ import com.meishi.model.Order;
 import com.meishi.model.Sender;
 import com.meishi.repository.DishRepository;
 import com.meishi.repository.OrderRepository;
-import com.meishi.test.repository.app.MeishiRepositoryApplicationForTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { MeishiRepositoryApplicationForTest.class })
+@SpringApplicationConfiguration(classes = { RepositoryApplication.class })
 public class OrderRepositoryTest {
 
 	private Logger logger = Logger.getLogger(this.getClass());

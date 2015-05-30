@@ -5,24 +5,57 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.data.authentication.UserCredentials;
+import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import com.meishi.security.BasicAuthenticationProvider;
-import com.meishi.test.repository.app.MeishiRepositoryApplicationForTest;
+import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan
-@Import(MeishiRepositoryApplicationForTest.class)
 public class MeishiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MeishiApplication.class, args);
 
+	}
+
+	@Configuration
+	@EnableMongoRepositories
+	public static class RepositoryApplication extends AbstractMongoConfiguration {
+
+		@Override
+		protected String getDatabaseName() {
+			return "meishiTest";
+		}
+
+		@Override
+		protected UserCredentials getUserCredentials() {
+			return new UserCredentials("meishiTestUser", "654321");
+		}
+
+		// @Override
+		// protected String getDatabaseName() {
+		// return "meishi";
+		// }
+		//
+		// @Override
+		// protected UserCredentials getUserCredentials() {
+		// return new UserCredentials("meishiUser", "123456");
+		// }
+
+		@Override
+		public Mongo mongo() throws Exception {
+			MongoClient mongoClient = new MongoClient("localhost", 27017);
+			return mongoClient;
+		}
 	}
 
 	@Configuration
@@ -36,12 +69,8 @@ public class MeishiApplication {
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http.authenticationProvider(authenticationProvider())
-			.csrf().disable()
-			.authorizeRequests()
-			.anyRequest()
-			.authenticated()
-			.and().httpBasic();
+			http.authenticationProvider(authenticationProvider()).csrf().disable().authorizeRequests().anyRequest()
+					.authenticated().and().httpBasic();
 		}
 	}
 

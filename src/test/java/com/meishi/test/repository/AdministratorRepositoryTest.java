@@ -13,14 +13,14 @@ import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.meishi.MeishiApplication;
+import com.meishi.MeishiApplication.RepositoryApplication;
 import com.meishi.model.Administrator;
 import com.meishi.model.Rank;
 import com.meishi.model.WorkerStatus;
 import com.meishi.repository.AdminRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { MeishiApplication.class })
+@SpringApplicationConfiguration(classes = { RepositoryApplication.class })
 public class AdministratorRepositoryTest {
 
 	@Autowired

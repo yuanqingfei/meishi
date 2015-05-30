@@ -42,45 +42,45 @@ public class RemoteOrderRestServiceTest {
 	@Test
 	public void testCreateOrder() {
 		String request = "{\"meishiList\" : \"À±×Ó¼¦\", \"clientLocation\" : \"\", \"clientId\" : \"123456789\"}";
-		postRequestOK(customerClient, "http://localhost:8080/meishi/createOrder", request);
+		postRequestOK(customerClient, "http://localhost:8080/action/createOrder", request);
 	}
 
 	@Test
 	public void testCookAcceptOrder() {
-		postRequestOK(cookClient, "http://localhost:8080/meishi/cookAcceptOrder", null);
+		postRequestOK(cookClient, "http://localhost:8080/action/cookAcceptOrder", null);
 	}
 
 	@Test
 	public void testCookDoneOrder() {
-		postRequestOK(cookClient, "http://localhost:8080/meishi/cookDoneOrder", null);
+		postRequestOK(cookClient, "http://localhost:8080/action/cookDoneOrder", null);
 	}
 
 	@Test
 	public void testSenderAcceptOrder() {
-		postRequestOK(senderClient, "http://localhost:8080/meishi/senderAcceptOrder", null);
+		postRequestOK(senderClient, "http://localhost:8080/action/senderAcceptOrder", null);
 	}
 
 	@Test
 	public void testSenderDoneOrder() {
-		postRequestOK(senderClient, "http://localhost:8080/meishi/senderDoneOrder", null);
+		postRequestOK(senderClient, "http://localhost:8080/action/senderDoneOrder", null);
 	}
 
 	@Test
 	public void testAdminEsclationOrderFalseCook() {
 		String request = "{\"refund\" : false, \"restart\" : \"C\"}";
-		postRequestOK(adminClient, "http://localhost:8080/meishi/adminEsclateOrder", request);
+		postRequestOK(adminClient, "http://localhost:8080/action/adminEsclateOrder", request);
 	}
 	
 	@Test
 	public void testAdminEsclationOrderFalseSender() {
 		String request = "{\"refund\" : false, \"restart\" : \"S\"}";
-		postRequestOK(adminClient, "http://localhost:8080/meishi/adminEsclateOrder", request);
+		postRequestOK(adminClient, "http://localhost:8080/action/adminEsclateOrder", request);
 	}
 	
 	@Test
 	public void testAdminEsclationOrderTrue() {
 		String request = "{\"refund\" : true}";
-		postRequestOK(adminClient, "http://localhost:8080/meishi/adminEsclateOrder", request);
+		postRequestOK(adminClient, "http://localhost:8080/action/adminEsclateOrder", request);
 	}
 
 	@Test

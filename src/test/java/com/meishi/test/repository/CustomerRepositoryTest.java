@@ -12,16 +12,16 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.data.geo.Point;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.meishi.MeishiApplication.RepositoryApplication;
 import com.meishi.model.Cook;
 import com.meishi.model.Customer;
 import com.meishi.model.Dish;
 import com.meishi.repository.CookRepository;
 import com.meishi.repository.CustomerRepository;
 import com.meishi.repository.DishRepository;
-import com.meishi.test.repository.app.MeishiRepositoryApplicationForTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { MeishiRepositoryApplicationForTest.class })
+@SpringApplicationConfiguration(classes = { RepositoryApplication.class })
 public class CustomerRepositoryTest {
 
 	@Autowired
@@ -29,7 +29,7 @@ public class CustomerRepositoryTest {
 
 	@Autowired
 	private CookRepository cookRepo;
-	
+
 	@Autowired
 	private DishRepository dishRepo;
 
@@ -46,7 +46,7 @@ public class CustomerRepositoryTest {
 	@Before
 	public void setUp() {
 		customerRepo.deleteAll();
-		
+
 		customer = new Customer();
 		customer.setIdentity("8888888");
 		double[] point = new double[] { 5, 5 };

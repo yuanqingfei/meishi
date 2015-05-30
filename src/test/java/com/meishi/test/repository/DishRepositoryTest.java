@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.meishi.MeishiApplication.RepositoryApplication;
 import com.meishi.model.Dish;
 import com.meishi.repository.DishRepository;
-import com.meishi.test.repository.app.MeishiRepositoryApplicationForTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { MeishiRepositoryApplicationForTest.class })
+@SpringApplicationConfiguration(classes = { RepositoryApplication.class })
 public class DishRepositoryTest {
 
 	@Autowired
