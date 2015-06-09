@@ -21,10 +21,6 @@ public class Worker extends Person implements Comparable<Worker>, Serializable {
 		this.status = status;
 	}
 
-	@Override
-	public int compareTo(Worker other) {
-		return this.rank.ordinal() - other.rank.ordinal();
-	}
 
 	public Rank getRank() {
 		return rank;
@@ -32,6 +28,10 @@ public class Worker extends Person implements Comparable<Worker>, Serializable {
 
 	public void setRank(Rank rank) {
 		this.rank = rank;
+	}
+
+	public int compareTo(Worker other) {
+		return this.rank.ordinal() - other.rank.ordinal();
 	}
 
 }
