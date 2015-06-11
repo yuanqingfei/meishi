@@ -2,65 +2,76 @@ package com.meishi.model;
 
 import java.io.Serializable;
 
-import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@CompoundIndex(name = "identity_name_index", def = "{'identity': 1, 'name': 2}")
 public class Person extends MongoDocument implements Serializable {
+	private static final long serialVersionUID = 1898355582020364397L;
+	
 	/**
+	 * can be id card number or email address, must be unique
+	 * Customer/Admin use email. Cook and Sender use id card number 
 	 * 
+	 * mandatory
 	 */
+	@Indexed
 	protected String identity;
 	
+	/**
+	 * mandatory
+	 * for customer, password need complicated. 6 digits, at least 1 upper case. 1 lower case.
+	 */
 	@JsonIgnore
 	protected String password;
 	
-	private static final long serialVersionUID = 1898355582020364397L;
+	/**
+	 * mandatory, can be nickname or real name.
+	 */
 	protected String name;
-	protected Gender gender;
-	protected Integer age;
+	
+	/**
+	 * mandatory, used to contact offline by Admin.
+	 */
 	protected String telephoneNumber;
 	
-	protected String streetName;
-	protected String districtName;
-	protected String commercialCircle;
+	/**
+	 * mandatory, used to convert to location.
+	 */
+	protected String address;
 	
+	/**
+	 * optional
+	 */
+	protected Gender gender;
+	
+	/**
+	 * optional 
+	 */
+	protected Integer age;
+	
+	
+	/**
+	 * mandatory, but will be offered by front client which convert address to it.
+	 */
 	@GeoSpatialIndexed
 	protected double[] location;
 	
-	
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getStreetName() {
-		return streetName;
-	}
-
-	public void setStreetName(String streetName) {
-		this.streetName = streetName;
-	}
-
-	public String getDistrictName() {
-		return districtName;
-	}
-
-	public void setDistrictName(String districtName) {
-		this.districtName = districtName;
-	}
-
-	public String getCommercialCircle() {
-		return commercialCircle;
-	}
-
-	public void setCommercialCircle(String commercialCircle) {
-		this.commercialCircle = commercialCircle;
 	}
 
 	public double[] getLocation() {

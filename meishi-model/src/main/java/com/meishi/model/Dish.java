@@ -13,18 +13,50 @@ public class Dish extends MongoDocument implements Serializable {
 	 */
 	private static final long serialVersionUID = 4170527136884410179L;
 
+	/**
+	 * mandatory, currently is unique in system.
+	 */
 	private String name;
 
+	/**
+	 * mandatory, Cook/Admin need offer it.
+	 */
 	private Double price;
+	
+	/**
+	 * mandatory, it will be side by picture to introduce it.
+	 */
+	private String description;
 
+	/**
+	 * mandatory
+	 */
+	private Byte[] image;
+	
+	/**
+	 * mandatory, need to specify which region it belong to.
+	 */
+	private String style;
+
+	/**
+	 * optional
+	 */
 	private Double stars = 4.0; // use to mark its popularity
 								// 1,1.5,2,2.5,3,3.5,4,4.5,5
 
-	private String description;
-
-	private Byte[] image;
-
+	/**
+	 * optional
+	 */
 	private List<String> comments;
+	
+
+	public String getStyle() {
+		return style;
+	}
+
+	public void setStyle(String style) {
+		this.style = style;
+	}
 
 	public String getName() {
 		return name;

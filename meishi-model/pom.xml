@@ -4,13 +4,12 @@
 
 	<parent>
 		<groupId>com.meishi</groupId>
-		<artifactId>parent</artifactId>
+		<artifactId>meishi-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>model</artifactId>
+	<artifactId>meishi-model</artifactId>
 	<packaging>jar</packaging>
-	<name>meishi-model</name>
 	<url>http://www.meishi.com</url>
 
 	<dependencies>

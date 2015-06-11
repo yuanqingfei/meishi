@@ -9,6 +9,7 @@ import org.springframework.data.authentication.UserCredentials;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -40,22 +41,24 @@ public class MeishiApplication {
 		protected UserCredentials getUserCredentials() {
 			return new UserCredentials("meishiTestUser", "654321");
 		}
-
-		// @Override
-		// protected String getDatabaseName() {
-		// return "meishi";
-		// }
-		//
-		// @Override
-		// protected UserCredentials getUserCredentials() {
-		// return new UserCredentials("meishiUser", "123456");
-		// }
-
+		
 		@Override
 		public Mongo mongo() throws Exception {
 			MongoClient mongoClient = new MongoClient("localhost", 27017);
 			return mongoClient;
 		}
+
+//		 @Override
+//		 protected String getDatabaseName() {
+//		 return "meishi";
+//		 }
+//		
+//		 @Override
+//		 protected UserCredentials getUserCredentials() {
+//		 return new UserCredentials("meishiUser", "123456");
+//		 }
+
+
 	}
 
 	@Configuration
@@ -66,6 +69,16 @@ public class MeishiApplication {
 		public AuthenticationProvider authenticationProvider() {
 			return new BasicAuthenticationProvider();
 		}
+		
+//		@Override
+//		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//			// @formatter:off
+//			auth.inMemoryAuthentication()
+//				.withUser("roy")
+//					.password("spring")
+//					.roles("USER");
+//			// @formatter:on
+//		}
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
