@@ -22,8 +22,9 @@ public class Person extends MongoDocument implements Serializable {
 	/**
 	 * mandatory
 	 * for customer, password need complicated. 6 digits, at least 1 upper case. 1 lower case.
+	 * 
+	 * remove Ignore so that it can be saved to mongoDB from Android
 	 */
-	@JsonIgnore
 	protected String password;
 	
 	/**
