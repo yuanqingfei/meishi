@@ -1,6 +1,7 @@
 package com.meishi.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.query.Param;
 
 import com.meishi.model.Dish;
 
@@ -11,6 +12,6 @@ import com.meishi.model.Dish;
  */
 public interface DishRepository extends MongoRepository<Dish, String> {
 
-	public Dish findByName(String name);
+	public Dish findByName(@Param("dishName") String name);
 
 }

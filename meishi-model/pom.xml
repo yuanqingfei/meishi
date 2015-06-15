@@ -19,10 +19,10 @@
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
 		
-		<dependency>
+ 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
-		</dependency>
+		</dependency> 
 
 		<dependency>
 			<groupId>junit</groupId>

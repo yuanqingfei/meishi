@@ -4,14 +4,19 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import com.meishi.model.Order;
 
 public interface OrderRepository extends MongoRepository<Order, String>, OrderRepositoryCustom {
 
-	public List<Order> findByCustomer_Identity(String identity);
+	@RestResource(path = "findByClientId")
+	public List<Order> findByCustomer_Identity(@Param("clientId") String identity);
 
-	public List<Order> findByAdministrator_Identity(String identity);
+	@RestResource(path = "findByAdminId")
+	public List<Order> findByAdministrator_Identity(@Param("adminId") String identity);
 
-	public Order findByCustomer_IdentityAndOrderTime(String identity, Date orderTime);
+	@RestResource(path = "findByClientIdAndOrderTime")
+	public Order findByCustomer_IdentityAndOrderTime(@Param("clientId") String identity, @Param("orderDate") Date orderTime);
 }
