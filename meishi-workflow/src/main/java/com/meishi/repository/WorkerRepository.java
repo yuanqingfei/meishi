@@ -17,8 +17,8 @@ public interface WorkerRepository<T extends Worker> {
 
 	public List<T> findByRank(@Param("rank") Rank rank);
 
-	@RestResource(exported = false)
-	public List<T> findByLocationNear(Point location, Distance distance);
+	@RestResource(exported = true)
+	public List<T> findByLocationNear(@Param("location") Point location, @Param("distance") Distance distance);
 
 	public T findByIdentity(@Param("identity") String identity);
 

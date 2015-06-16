@@ -9,25 +9,33 @@ import org.springframework.stereotype.Component;
 import com.meishi.model.Customer;
 import com.meishi.model.Dish;
 import com.meishi.repository.CustomerRepository;
+import com.meishi.util.Constants;
 
 @Component
 public class CustomerServiceImpl implements CustomerService {
 	
 	@Autowired
 	private CustomerRepository customerRepo;
+	
+	@Autowired
+	private UserAndGroupService ugService;
 
 	@Override
 	public void deleteAll() {
+		ugService.deleteAll(Constants.CLIENT_GROUP_ID);
 		customerRepo.deleteAll();
 	}
 
 	@Override
 	public Customer upsert(Customer entity) {
-		return customerRepo.save(entity);
+		Customer client = customerRepo.save(entity);
+		ugService.createUser(entity.getIdentity(), entity.getPassword(), Constants.CLIENT_GROUP_ID);
+		return client;
 	}
 
 	@Override
 	public void delete(String identity) {
+		ugService.deleteUser(identity, Constants.CLIENT_GROUP_ID);
 		customerRepo.delete(get(identity));
 
 	}

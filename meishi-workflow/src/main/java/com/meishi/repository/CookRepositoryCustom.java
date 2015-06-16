@@ -8,6 +8,7 @@ import com.meishi.model.Cook;
 
 public interface CookRepositoryCustom {
 
-	public List<Cook> findByDish(@Param("dishName") String dishName);
+	List<Cook> findByDish(@Param("dishName") String dishName);
+	
 
 }

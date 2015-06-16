@@ -13,6 +13,7 @@ import com.meishi.model.Rank;
 import com.meishi.model.Sender;
 import com.meishi.model.WorkerStatus;
 import com.meishi.repository.SenderRepository;
+import com.meishi.util.Constants;
 
 @Component
 public class SenderServiceImpl implements SenderService {
@@ -21,6 +22,9 @@ public class SenderServiceImpl implements SenderService {
 	private SenderRepository senderRepo;
 
 	private WorkerFinder<Sender> workerFinder;
+	
+	@Autowired
+	private UserAndGroupService ugService;
 
 	@PostConstruct
 	public void setUpRepo() {
@@ -29,11 +33,14 @@ public class SenderServiceImpl implements SenderService {
 
 	@Override
 	public Sender upsert(Sender entity) {
-		return senderRepo.save(entity);
+		Sender sender = senderRepo.save(entity);
+		ugService.createUser(entity.getIdentity(), entity.getPassword(), Constants.SENDER_GROUP_ID);
+		return sender;
 	}
 
 	@Override
 	public void delete(String identity) {
+		ugService.deleteUser(identity, Constants.SENDER_GROUP_ID);
 		Sender sender = get(identity);
 		senderRepo.delete(sender);
 	}
@@ -102,6 +109,7 @@ public class SenderServiceImpl implements SenderService {
 
 	@Override
 	public void deleteAll() {
+		ugService.deleteAll(Constants.SENDER_GROUP_ID);
 		senderRepo.deleteAll();
 	}
 }

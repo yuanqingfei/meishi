@@ -13,6 +13,7 @@ import com.meishi.model.Cook;
 import com.meishi.model.Rank;
 import com.meishi.model.WorkerStatus;
 import com.meishi.repository.CookRepository;
+import com.meishi.util.Constants;
 
 @Component
 public class CookServiceImpl implements CookService {
@@ -21,6 +22,9 @@ public class CookServiceImpl implements CookService {
 	private CookRepository cookRepo;
 
 	private WorkerFinder<Cook> workerFinder;
+	
+	@Autowired
+	private UserAndGroupService ugService;
 
 	@PostConstruct
 	public void setUpRepo() {
@@ -29,11 +33,14 @@ public class CookServiceImpl implements CookService {
 
 	@Override
 	public Cook upsert(Cook entity) {
-		return cookRepo.save(entity);
+		Cook cook = cookRepo.save(entity);
+		ugService.createUser(entity.getIdentity(), entity.getPassword(), Constants.COOK_GROUP_ID);
+		return cook;
 	}
 
 	@Override
 	public void delete(String identity) {
+		ugService.deleteUser(identity, Constants.COOK_GROUP_ID);
 		Cook cook = get(identity);
 		cookRepo.delete(cook);
 	}
@@ -107,6 +114,7 @@ public class CookServiceImpl implements CookService {
 
 	@Override
 	public void deleteAll() {
+		ugService.deleteAll(Constants.COOK_GROUP_ID);
 		cookRepo.deleteAll();
 	}
 

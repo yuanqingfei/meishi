@@ -12,12 +12,16 @@ import org.springframework.stereotype.Component;
 import com.meishi.model.Administrator;
 import com.meishi.model.WorkerStatus;
 import com.meishi.repository.AdminRepository;
+import com.meishi.util.Constants;
 
 @Component
 public class AdministratorServiceImpl implements AdministratorService {
 
 	@Autowired
 	private AdminRepository adminRepo;
+	
+	@Autowired
+	private UserAndGroupService ugService;
 
 	private WorkerFinder<Administrator> workerFinder;
 
@@ -28,11 +32,14 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public Administrator upsert(Administrator entity) {
-		return adminRepo.save(entity);
+		Administrator admin = adminRepo.save(entity);
+		ugService.createUser(entity.getIdentity(), entity.getPassword(), Constants.ADMIN_GROUP_ID);
+		return admin;
 	}
 
 	@Override
 	public void delete(String identity) {
+		ugService.deleteUser(identity, Constants.ADMIN_GROUP_ID);
 		Administrator admin = adminRepo.findByIdentity(identity);
 		adminRepo.delete(admin);
 	}
@@ -72,6 +79,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public void deleteAll() {
+		ugService.deleteAll(Constants.ADMIN_GROUP_ID);
 		adminRepo.deleteAll();
 	}
 

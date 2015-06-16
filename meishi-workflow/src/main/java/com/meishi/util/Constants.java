@@ -3,6 +3,12 @@ package com.meishi.util;
 import org.springframework.data.geo.Distance;
 
 public interface Constants {
+	
+	String ADMIN_GROUP_ID = "admin";
+	String COOK_GROUP_ID = "cook";
+	String SENDER_GROUP_ID = "sender";
+	String CLIENT_GROUP_ID = "client";
+	
 
 	Distance DEFAULT_DISTANCE = new Distance(2.0);
 
