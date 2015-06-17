@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -36,13 +37,13 @@ public class AdministratorRepositoryTest {
 
 		admin = new Administrator();
 		admin.setIdentity("8888888");
-		double[] point = new double[] { 5, 6 };
+		double[] point = new double[] { 121.441194, 31.139019  }; // 903 nong
 		admin.setLocation(point);
 		admin.setRank(Rank.Rank5);
 
 		anotherAdmin = new Administrator();
 		anotherAdmin.setIdentity("999999999");
-		double[] anotherPoint = new double[] { 6, 6 };
+		double[] anotherPoint = new double[] { 121.378294, 31.010352 }; // kunyang 620 nong
 		anotherAdmin.setLocation(anotherPoint);
 		Administrator existed = adminRepo.save(anotherAdmin);
 		admin.getDirectWorkerIds().add(existed.getIdentity());
@@ -72,9 +73,8 @@ public class AdministratorRepositoryTest {
 
 	@Test
 	public void testFindByLocationNear() {
-		Point point = new Point(5, 5);
-		// Distance distance = new Distance(2, Metrics.KILOMETERS);
-		Distance distance = new Distance(1);
+		Point point = new Point(121.445299, 31.126856); // 1296 NONG
+		 Distance distance = new Distance(2, Metrics.KILOMETERS);
 		List<Administrator> admins = adminRepo.findByLocationNear(point, distance);
 		Assert.assertEquals(1, admins.size());
 	}

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -17,7 +17,7 @@ public class CookRepositoryImpl implements CookRepositoryCustom {
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired
-	private MongoOperations operations;
+	private MongoTemplate operations;
 
 	@Autowired
 	private DishRepository dishRepo;

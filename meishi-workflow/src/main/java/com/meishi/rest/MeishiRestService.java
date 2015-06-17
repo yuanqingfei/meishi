@@ -29,25 +29,25 @@ public class MeishiRestService {
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/action/cookAcceptOrder", method = RequestMethod.POST)
+	@RequestMapping(value = "/action/cookAcceptOrder", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
 	public void cookAcceptOrder(Principal principal) {
 		meishiService.cookAcceptOrder(principal.getName());
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/action/cookDoneOrder", method = RequestMethod.POST)
+	@RequestMapping(value = "/action/cookDoneOrder", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
 	public void cookDoneOrder(Principal principal) {
 		meishiService.cookDoneOrder(principal.getName());
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/action/senderAcceptOrder", method = RequestMethod.POST)
+	@RequestMapping(value = "/action/senderAcceptOrder", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
 	public void senderAcceptOrder(Principal principal) {
 		meishiService.senderAcceptOrder(principal.getName());
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/action/senderDoneOrder", method = RequestMethod.POST)
+	@RequestMapping(value = "/action/senderDoneOrder", method = RequestMethod.POST, consumes = "application/json; charset=utf-8", produces = "application/json; charset=utf-8")
 	public void senderDoneOrder(Principal principal) {
 		meishiService.senderDoneOrder(principal.getName());
 	}
