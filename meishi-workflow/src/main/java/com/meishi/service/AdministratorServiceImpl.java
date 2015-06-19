@@ -4,10 +4,13 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
+
+
 
 import com.meishi.model.Administrator;
 import com.meishi.model.WorkerStatus;
@@ -16,6 +19,8 @@ import com.meishi.util.Constants;
 
 @Component
 public class AdministratorServiceImpl implements AdministratorService {
+	
+	private Logger logger = Logger.getLogger(AdministratorServiceImpl.class.getSimpleName());
 
 	@Autowired
 	private AdminRepository adminRepo;
@@ -87,9 +92,11 @@ public class AdministratorServiceImpl implements AdministratorService {
 	public Administrator findByLocation(Point location, Distance distance) {
 		List<Administrator> admins = adminRepo.findByLocationNear(location, distance);
 		if (admins == null || admins.size() == 0) {
-			throw new RuntimeException("there is no admin around " + location + " within " + distance);
+			logger.warn("there is no admin around " + location + " within " + distance);
 		}
-		return admins.get(0);
+		
+		// use random admin for now
+		return getAll().get(0);
 	}
 
 }

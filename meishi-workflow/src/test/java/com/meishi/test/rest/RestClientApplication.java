@@ -23,7 +23,7 @@ public class RestClientApplication {
 
 	@Bean(name = "customerClient")
 	public RestTemplate customerClient() {
-		return createRestTemplate(user("123456789", "111"));
+		return createRestTemplate(user("14700000000", "111111"));
 	}
 
 	@Bean(name = "cookClient")

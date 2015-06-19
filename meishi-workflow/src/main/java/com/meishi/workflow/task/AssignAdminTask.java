@@ -28,14 +28,15 @@ public class AssignAdminTask implements JavaDelegate {
 	public void execute(DelegateExecution exec) throws Exception {
 		String clientLocation = (String) exec.getVariable(Constants.CLIENT_LOCATION_VARIABLE);
 		String clientId = (String) exec.getVariable(Constants.CLIENT_ID_VARIABLE);
-		double[] location = new double[] {};
+		double[] location = new double[2] ;
 		if (clientLocation == null || clientLocation.length() == 0) {
 			Customer customer = customerService.get(clientId);
 			location = customer.getLocation();
 		} else {
-			String[] address = clientLocation.split(Constants.CLIENT_LOCATION_SEPARATER_VARIABLE);
-			location[0] = Double.valueOf(address[0]);
-			location[1] = Double.valueOf(address[1]);
+			String[] adAndLoc = clientLocation.split(":");
+			String[] locationArray = adAndLoc[1].split(",");
+			location[0] = Double.valueOf(locationArray[0]);
+			location[1] = Double.valueOf(locationArray[1]);
 		}
 		Point point = new Point(location[0], location[1]);
 

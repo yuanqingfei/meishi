@@ -17,6 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
+import com.meishi.model.Dish;
+import com.meishi.model.OrderRequest;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { RestClientApplication.class })
 public class RemoteOrderRestServiceTest {
@@ -41,8 +44,11 @@ public class RemoteOrderRestServiceTest {
 
 	@Test
 	public void testCreateOrder() {
-		String request = "{\"meishiList\" : \"À±×Ó¼¦\", \"clientLocation\" : \"\", \"clientId\" : \"123456789\"}";
-		postRequestOK(customerClient, "http://localhost:8080/action/createOrder", request);
+		OrderRequest request = new OrderRequest();
+		request.setAddress("");
+		request.setClientId("14700000000");
+		request.setDishName("À±×Ó¼¦");
+		postOrderRequestOK(customerClient, "http://localhost:8080/action/createOrder", request);
 	}
 
 	@Test
@@ -131,13 +137,23 @@ public class RemoteOrderRestServiceTest {
 		testSenderDoneOrder();
 	}
 	
-
+	
 	private void postRequestOK(RestTemplate restClient, String url, String requestString) {
 		HttpHeaders headers = new HttpHeaders();
 		// need set UTF-8 here for chinese input. For sever side
 		// both acitiviti and spring json handler already support utf-8.
 		headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 		HttpEntity<String> request = new HttpEntity<String>(requestString, headers);
+		ResponseEntity<String> response = restClient.exchange(url, HttpMethod.POST, request, String.class);
+		Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+	}
+
+	private void postOrderRequestOK(RestTemplate restClient, String url, OrderRequest order) {
+		HttpHeaders headers = new HttpHeaders();
+		// need set UTF-8 here for chinese input. For sever side
+		// both acitiviti and spring json handler already support utf-8.
+		headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+		HttpEntity<OrderRequest> request = new HttpEntity<OrderRequest>(order, headers);
 		ResponseEntity<String> response = restClient.exchange(url, HttpMethod.POST, request, String.class);
 		Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
 	}

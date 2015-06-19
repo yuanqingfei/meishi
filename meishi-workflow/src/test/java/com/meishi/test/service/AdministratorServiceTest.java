@@ -2,6 +2,7 @@ package com.meishi.test.service;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -29,6 +30,11 @@ public class AdministratorServiceTest {
 		admin.setStatus(WorkerStatus.READY);
 		admin.setRank(Rank.Rank5);
 		adminService.upsert(admin);
+	}
+	
+	@Test
+	public void testXXX(){
+		
 	}
 
 	@After
