@@ -3,6 +3,7 @@ package com.meishi.model;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.data.geo.Distance;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -25,7 +26,7 @@ public class Dish extends MongoDocument implements Serializable {
 	 * mandatory, Cook/Admin need offer it.
 	 */
 	private Double price;
-	
+
 	/**
 	 * mandatory, it will be side by picture to introduce it.
 	 */
@@ -35,23 +36,35 @@ public class Dish extends MongoDocument implements Serializable {
 	 * mandatory
 	 */
 	private Byte[] image;
-	
+
 	/**
 	 * mandatory, need to specify which region it belong to.
 	 */
 	private String style;
 
 	/**
-	 * optional
+	 * optional, use to mark its popularity 1,1.5,2,2.5,3,3.5,4,4.5,5
 	 */
-	private Double stars = 4.0; // use to mark its popularity
-								// 1,1.5,2,2.5,3,3.5,4,4.5,5
+	private Double stars = 4.0;
 
 	/**
 	 * optional
 	 */
 	private List<String> comments;
-	
+
+	/**
+	 * optional, use to store the dynamic distance with map center only set in
+	 * client and will not persistent.
+	 */
+	private Distance distance;
+
+	public Distance getDistance() {
+		return distance;
+	}
+
+	public void setDistance(Distance distance) {
+		this.distance = distance;
+	}
 
 	public String getStyle() {
 		return style;
@@ -136,8 +149,9 @@ public class Dish extends MongoDocument implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Meishi [name=" + name + ", price=" + price + ", stars=" + stars + ", description=" + description
-				+ ", comments=" + comments + "]";
+		return "Meishi [name=" + name + ", price=" + price + ", stars=" + stars
+				+ ", description=" + description + ", comments=" + comments
+				+ "]";
 	}
 
 	// public Boolean isAvaiable(){

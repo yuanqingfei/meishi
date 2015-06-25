@@ -88,6 +88,6 @@
 	<classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpcore/4.4.1/httpcore-4.4.1.jar" sourcepath="M2_REPO/org/apache/httpcomponents/httpcore/4.4.1/httpcore-4.4.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.2/commons-logging-1.2.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.2/commons-logging-1.2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.9/commons-codec-1.9.jar" sourcepath="M2_REPO/commons-codec/commons-codec/1.9/commons-codec-1.9-sources.jar"/>
-	<classpathentry kind="lib" path="D:/repo/com/meishi/meishi-model/1.0.0-SNAPSHOT/meishi-model-1.0.0-SNAPSHOT.jar" sourcepath="/meishi-model"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/meishi-model"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
